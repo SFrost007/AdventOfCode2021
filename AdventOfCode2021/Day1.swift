@@ -21,22 +21,16 @@ class Day1 {
     // MARK: - Problem cases
     
     func part1() -> Int {
-        return Self.countIncrements(in: inputData)
+        var count = 0
+        for (index, item) in inputData.enumerated() {
+            guard index > 0 else { continue }
+            if item > inputData[index-1] { count += 1 }
+        }
+        return count
     }
     
     func part2() -> Int {
         fatalError("Not yet implemented")
-    }
-    
-    // MARK: - Worker functions
-    
-    static func countIncrements(in input: [Int]) -> Int {
-        var count = 0
-        for (index, item) in input.enumerated() {
-            guard index > 0 else { continue }
-            if item > input[index-1] { count += 1 }
-        }
-        return count
     }
     
 }

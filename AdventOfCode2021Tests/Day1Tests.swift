@@ -14,7 +14,6 @@ class Day1Tests: AoCTestCase {
     let myInput = Day1(inputURL: urlForMyInputData(day: 1))
     
     func testPart1() {
-        XCTAssertEqual(Day1.countIncrements(in: example.inputData), 7)
         XCTAssertEqual(example.part1(), 7)
         
         print("Answer for Day 1 Part 1: \(myInput.part1())")
@@ -24,7 +23,6 @@ class Day1Tests: AoCTestCase {
     }
     
     func testPart2() {
-        //XCTAssertEqual(Day1.findSomething(in: example.inputData[0]), 123)
         XCTAssertEqual(example.part2(), 123)
         
         print("Answer for Day 1 Part 2: \(myInput.part2())")
