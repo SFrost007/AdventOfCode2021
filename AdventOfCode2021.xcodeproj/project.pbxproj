@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		F413EACA2578EB8400CA5BE2 /* AoCTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F413EAC92578EB8400CA5BE2 /* AoCTestCase.swift */; };
+		F44A65FC2756DED100F246CB /* Day1.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44A65FB2756DED100F246CB /* Day1.swift */; };
+		F44A65FE2756DED900F246CB /* Day1Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44A65FD2756DED900F246CB /* Day1Tests.swift */; };
+		F44A66012756DEE000F246CB /* Day1_Example.txt in Resources */ = {isa = PBXBuildFile; fileRef = F44A65FF2756DEE000F246CB /* Day1_Example.txt */; };
+		F44A66022756DEE000F246CB /* Day1_MyInput.txt in Resources */ = {isa = PBXBuildFile; fileRef = F44A66002756DEE000F246CB /* Day1_MyInput.txt */; };
 		F4F746F025784934000F3978 /* AdventOfCode2021.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4F746E625784933000F3978 /* AdventOfCode2021.framework */; };
 /* End PBXBuildFile section */
 
@@ -23,6 +27,10 @@
 
 /* Begin PBXFileReference section */
 		F413EAC92578EB8400CA5BE2 /* AoCTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AoCTestCase.swift; sourceTree = "<group>"; };
+		F44A65FB2756DED100F246CB /* Day1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Day1.swift; sourceTree = "<group>"; };
+		F44A65FD2756DED900F246CB /* Day1Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Day1Tests.swift; sourceTree = "<group>"; };
+		F44A65FF2756DEE000F246CB /* Day1_Example.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Day1_Example.txt; sourceTree = "<group>"; };
+		F44A66002756DEE000F246CB /* Day1_MyInput.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Day1_MyInput.txt; sourceTree = "<group>"; };
 		F4F746E625784933000F3978 /* AdventOfCode2021.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AdventOfCode2021.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4F746EA25784933000F3978 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F4F746EF25784934000F3978 /* AdventOfCode2021Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AdventOfCode2021Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -69,6 +77,7 @@
 		F4F746E825784933000F3978 /* AdventOfCode2021 */ = {
 			isa = PBXGroup;
 			children = (
+				F44A65FB2756DED100F246CB /* Day1.swift */,
 				F4F746EA25784933000F3978 /* Info.plist */,
 			);
 			path = AdventOfCode2021;
@@ -77,6 +86,7 @@
 		F4F746F325784934000F3978 /* AdventOfCode2021Tests */ = {
 			isa = PBXGroup;
 			children = (
+				F44A65FD2756DED900F246CB /* Day1Tests.swift */,
 				F4F7470E257849F5000F3978 /* InputData */,
 				F4F746F625784934000F3978 /* Info.plist */,
 				F413EAC92578EB8400CA5BE2 /* AoCTestCase.swift */,
@@ -87,6 +97,8 @@
 		F4F7470E257849F5000F3978 /* InputData */ = {
 			isa = PBXGroup;
 			children = (
+				F44A65FF2756DEE000F246CB /* Day1_Example.txt */,
+				F44A66002756DEE000F246CB /* Day1_MyInput.txt */,
 			);
 			path = InputData;
 			sourceTree = "<group>";
@@ -151,7 +163,7 @@
 				TargetAttributes = {
 					F4F746E525784933000F3978 = {
 						CreatedOnToolsVersion = 12.2;
-						LastSwiftMigration = 1220;
+						LastSwiftMigration = 1310;
 					};
 					F4F746EE25784934000F3978 = {
 						CreatedOnToolsVersion = 12.2;
@@ -189,6 +201,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F44A66022756DEE000F246CB /* Day1_MyInput.txt in Resources */,
+				F44A66012756DEE000F246CB /* Day1_Example.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -199,6 +213,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F44A65FC2756DED100F246CB /* Day1.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -206,6 +221,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F44A65FE2756DED900F246CB /* Day1Tests.swift in Sources */,
 				F413EACA2578EB8400CA5BE2 /* AoCTestCase.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -397,6 +413,7 @@
 		F4F746FE25784934000F3978 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 72QYCYTSY4;
@@ -415,6 +432,7 @@
 		F4F746FF25784934000F3978 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 72QYCYTSY4;
