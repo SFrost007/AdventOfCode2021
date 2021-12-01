@@ -30,7 +30,14 @@ class Day1 {
     }
     
     func part2() -> Int {
-        fatalError("Not yet implemented")
+        var count = 0
+        var lastTotal = Int.max
+        for i in 2..<inputData.count {
+            let thisTotal = inputData[i-2] + inputData[i-1] + inputData[i]
+            if thisTotal > lastTotal { count += 1}
+            lastTotal = thisTotal
+        }
+        return count
     }
     
 }
