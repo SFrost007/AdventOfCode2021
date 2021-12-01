@@ -31,7 +31,12 @@ class Day1 {
     // MARK: - Worker functions
     
     static func countIncrements(in input: [Int]) -> Int {
-        return -1
+        var count = 0
+        for (index, item) in input.enumerated() {
+            guard index > 0 else { continue }
+            if item > input[index-1] { count += 1 }
+        }
+        return count
     }
     
 }
