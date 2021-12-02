@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		F413EACA2578EB8400CA5BE2 /* AoCTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F413EAC92578EB8400CA5BE2 /* AoCTestCase.swift */; };
+		F434A7E62758CB390074B8A3 /* Day2.swift in Sources */ = {isa = PBXBuildFile; fileRef = F434A7E52758CB390074B8A3 /* Day2.swift */; };
+		F434A7E92758CB470074B8A3 /* Day2_Example.txt in Resources */ = {isa = PBXBuildFile; fileRef = F434A7E72758CB470074B8A3 /* Day2_Example.txt */; };
+		F434A7EA2758CB470074B8A3 /* Day2_MyInput.txt in Resources */ = {isa = PBXBuildFile; fileRef = F434A7E82758CB470074B8A3 /* Day2_MyInput.txt */; };
+		F434A7EC2758CB790074B8A3 /* Day2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F434A7EB2758CB790074B8A3 /* Day2Tests.swift */; };
 		F44A65FC2756DED100F246CB /* Day1.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44A65FB2756DED100F246CB /* Day1.swift */; };
 		F44A65FE2756DED900F246CB /* Day1Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44A65FD2756DED900F246CB /* Day1Tests.swift */; };
 		F44A66012756DEE000F246CB /* Day1_Example.txt in Resources */ = {isa = PBXBuildFile; fileRef = F44A65FF2756DEE000F246CB /* Day1_Example.txt */; };
@@ -27,6 +31,10 @@
 
 /* Begin PBXFileReference section */
 		F413EAC92578EB8400CA5BE2 /* AoCTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AoCTestCase.swift; sourceTree = "<group>"; };
+		F434A7E52758CB390074B8A3 /* Day2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Day2.swift; sourceTree = "<group>"; };
+		F434A7E72758CB470074B8A3 /* Day2_Example.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Day2_Example.txt; sourceTree = "<group>"; };
+		F434A7E82758CB470074B8A3 /* Day2_MyInput.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Day2_MyInput.txt; sourceTree = "<group>"; };
+		F434A7EB2758CB790074B8A3 /* Day2Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Day2Tests.swift; sourceTree = "<group>"; };
 		F44A65FB2756DED100F246CB /* Day1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Day1.swift; sourceTree = "<group>"; };
 		F44A65FD2756DED900F246CB /* Day1Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Day1Tests.swift; sourceTree = "<group>"; };
 		F44A65FF2756DEE000F246CB /* Day1_Example.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Day1_Example.txt; sourceTree = "<group>"; };
@@ -78,6 +86,7 @@
 			isa = PBXGroup;
 			children = (
 				F44A65FB2756DED100F246CB /* Day1.swift */,
+				F434A7E52758CB390074B8A3 /* Day2.swift */,
 				F4F746EA25784933000F3978 /* Info.plist */,
 			);
 			path = AdventOfCode2021;
@@ -87,6 +96,7 @@
 			isa = PBXGroup;
 			children = (
 				F44A65FD2756DED900F246CB /* Day1Tests.swift */,
+				F434A7EB2758CB790074B8A3 /* Day2Tests.swift */,
 				F4F7470E257849F5000F3978 /* InputData */,
 				F4F746F625784934000F3978 /* Info.plist */,
 				F413EAC92578EB8400CA5BE2 /* AoCTestCase.swift */,
@@ -99,6 +109,8 @@
 			children = (
 				F44A65FF2756DEE000F246CB /* Day1_Example.txt */,
 				F44A66002756DEE000F246CB /* Day1_MyInput.txt */,
+				F434A7E72758CB470074B8A3 /* Day2_Example.txt */,
+				F434A7E82758CB470074B8A3 /* Day2_MyInput.txt */,
 			);
 			path = InputData;
 			sourceTree = "<group>";
@@ -203,6 +215,8 @@
 			files = (
 				F44A66022756DEE000F246CB /* Day1_MyInput.txt in Resources */,
 				F44A66012756DEE000F246CB /* Day1_Example.txt in Resources */,
+				F434A7E92758CB470074B8A3 /* Day2_Example.txt in Resources */,
+				F434A7EA2758CB470074B8A3 /* Day2_MyInput.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -214,6 +228,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F44A65FC2756DED100F246CB /* Day1.swift in Sources */,
+				F434A7E62758CB390074B8A3 /* Day2.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -223,6 +238,7 @@
 			files = (
 				F44A65FE2756DED900F246CB /* Day1Tests.swift in Sources */,
 				F413EACA2578EB8400CA5BE2 /* AoCTestCase.swift in Sources */,
+				F434A7EC2758CB790074B8A3 /* Day2Tests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
