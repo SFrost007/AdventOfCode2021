@@ -26,7 +26,9 @@ class Day3 {
     }
     
     func part2() -> Int {
-        fatalError("Not yet implemented")
+        let oxygenGeneratorRating = Self.findOxygenGeneratorRating(in: inputData)
+        let co2ScrubberRating = Self.findCO2ScrubberRating(in: inputData)
+        return Self.binaryToDecimal(oxygenGeneratorRating) * Self.binaryToDecimal(co2ScrubberRating)
     }
     
     // MARK: - Worker functions
@@ -59,6 +61,16 @@ class Day3 {
             .replacingOccurrences(of: "0", with: "x")
             .replacingOccurrences(of: "1", with: "0")
             .replacingOccurrences(of: "x", with: "1")
+    }
+    
+    // MARK: - Part 2
+    
+    static func findOxygenGeneratorRating(in input: [String]) -> String {
+        return ""
+    }
+    
+    static func findCO2ScrubberRating(in input: [String]) -> String {
+        return ""
     }
     
 }

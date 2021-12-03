@@ -27,7 +27,9 @@ class Day3Tests: AoCTestCase {
     }
     
     func testPart2() {
-        XCTAssertEqual(example.part2(), 123)
+        XCTAssertEqual(Day3.findOxygenGeneratorRating(in: example.inputData), "10111")
+        XCTAssertEqual(Day3.findCO2ScrubberRating(in: example.inputData), "01010")
+        XCTAssertEqual(example.part2(), 230)
         
         print("Answer for Day 3 Part 2: \(myInput.part2())")
         measure {
