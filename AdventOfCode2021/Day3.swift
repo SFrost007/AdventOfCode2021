@@ -34,7 +34,7 @@ class Day3 {
     static func calculateGammaRate(in input: [String]) -> String {
         input
             .map { Array($0).map { Int(String($0)) } } // ["01101", "11111"] -> [ [0,1,1,0,1], [1,1,1,1,1] ]
-            .reduce( [0,0,0,0,0,0,0,0,0,0,0,0]) { partialResult, thisValue in
+            .reduce( input.first!.map({ _ in 0 }) ) { partialResult, thisValue in
                 // Probably a neater way of doing this
                 partialResult.enumerated().map { (index, item) in
                     item + thisValue[index]!
