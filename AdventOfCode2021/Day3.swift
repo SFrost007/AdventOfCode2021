@@ -31,7 +31,7 @@ class Day3 {
     
     // MARK: - Worker functions
     
-    static func calculateGammaRate(in input: [String]) -> String {
+    static func findMostCommonValues(in input: [String]) -> [Int] {
         input
             .map { Array($0).map { Int(String($0)) } } // ["01101", "11111"] -> [ [0,1,1,0,1], [1,1,1,1,1] ]
             .reduce( input.first!.map({ _ in 0 }) ) { partialResult, thisValue in
@@ -40,7 +40,17 @@ class Day3 {
                     item + thisValue[index]!
                 }
             }
-            .map { $0 > (input.count / 2) ? "1" : "0" }
+    }
+    
+    static func binaryToDecimal(_ binary: String) -> Int {
+        Int(binary, radix: 2) ?? -1
+    }
+    
+    // MARK: - Part 1
+    
+    static func calculateGammaRate(in input: [String]) -> String {
+        findMostCommonValues(in: input)
+            .map { $0 >= (input.count / 2) ? "1" : "0" }
             .joined()
     }
     
@@ -49,10 +59,6 @@ class Day3 {
             .replacingOccurrences(of: "0", with: "x")
             .replacingOccurrences(of: "1", with: "0")
             .replacingOccurrences(of: "x", with: "1")
-    }
-    
-    static func binaryToDecimal(_ binary: String) -> Int {
-        Int(binary, radix: 2) ?? -1
     }
     
 }
