@@ -14,7 +14,7 @@ class Day3 {
     let inputData: [String]
     
     init(inputURL: URL) {
-        inputData = try! String(contentsOf: inputURL).components(separatedBy: .newlines)
+        inputData = try! String(contentsOf: inputURL).components(separatedBy: .newlines).filter { !$0.isEmpty }
     }
     
     // MARK: - Problem cases
@@ -32,15 +32,27 @@ class Day3 {
     // MARK: - Worker functions
     
     static func calculateGammaRate(in input: [String]) -> String {
-        return ""
+        input
+            .map { Array($0).map { Int(String($0)) } } // ["01101", "11111"] -> [ [0,1,1,0,1], [1,1,1,1,1] ]
+            .reduce( [0,0,0,0,0]) { partialResult, thisValue in
+                // Probably a neater way of doing this
+                partialResult.enumerated().map { (index, item) in
+                    item + thisValue[index]!
+                }
+            }
+            .map { $0 > (input.count / 2) ? "1" : "0" }
+            .joined()
     }
     
     static func calculateEpsilonRate(from gammaRate: String) -> String {
-        return ""
+        gammaRate
+            .replacingOccurrences(of: "0", with: "x")
+            .replacingOccurrences(of: "1", with: "0")
+            .replacingOccurrences(of: "x", with: "1")
     }
     
     static func binaryToDecimal(_ binary: String) -> Int {
-        return -1
+        Int(binary, radix: 2) ?? -1
     }
     
 }
