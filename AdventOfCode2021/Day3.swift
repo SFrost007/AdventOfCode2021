@@ -33,7 +33,8 @@ class Day3 {
     
     // MARK: - Worker functions
     
-    static func findMostCommonValues(in input: [String]) -> [Int] {
+    // Returns e.g. [123, 32, 45, 100, 42]
+    static func findEnabledBitCounts(in input: [String]) -> [Int] {
         input
             .map { Array($0).map { Int(String($0)) } } // ["01101", "11111"] -> [ [0,1,1,0,1], [1,1,1,1,1] ]
             .reduce( input.first!.map({ _ in 0 }) ) { partialResult, thisValue in
@@ -44,6 +45,12 @@ class Day3 {
             }
     }
     
+    // Returns e.g. ["1", "0", "1", "0", "1"]
+    static func findMostCommonValues(in input: [String]) -> [String] {
+        findEnabledBitCounts(in: input)
+            .map { $0 >= ((input.count + 1) / 2) ? "1" : "0" }
+    }
+    
     static func binaryToDecimal(_ binary: String) -> Int {
         Int(binary, radix: 2) ?? -1
     }
@@ -52,7 +59,6 @@ class Day3 {
     
     static func calculateGammaRate(in input: [String]) -> String {
         findMostCommonValues(in: input)
-            .map { $0 >= (input.count / 2) ? "1" : "0" }
             .joined()
     }
     
@@ -66,11 +72,34 @@ class Day3 {
     // MARK: - Part 2
     
     static func findOxygenGeneratorRating(in input: [String]) -> String {
-        return ""
+        var filteredInput = input
+        for position in 0..<input.first!.count {
+            let mostCommonValues = findMostCommonValues(in: filteredInput)
+            filteredInput = filteredInput.filter { String($0[position]) == mostCommonValues[position] }
+            if filteredInput.count == 1 { break }
+        }
+        return filteredInput.first!
     }
     
     static func findCO2ScrubberRating(in input: [String]) -> String {
-        return ""
+        var filteredInput = input
+        for position in 0..<input.first!.count {
+            let mostCommonValues = findMostCommonValues(in: filteredInput)
+            filteredInput = filteredInput.filter { String($0[position]) != mostCommonValues[position] }
+            if filteredInput.count == 1 { break }
+        }
+        return filteredInput.first!
     }
     
+}
+
+// MARK: - Helpers
+
+fileprivate extension StringProtocol {
+    subscript(_ offset: Int)                     -> Element     { self[index(startIndex, offsetBy: offset)] }
+    subscript(_ range: Range<Int>)               -> SubSequence { prefix(range.lowerBound+range.count).suffix(range.count) }
+    subscript(_ range: ClosedRange<Int>)         -> SubSequence { prefix(range.lowerBound+range.count).suffix(range.count) }
+    subscript(_ range: PartialRangeThrough<Int>) -> SubSequence { prefix(range.upperBound.advanced(by: 1)) }
+    subscript(_ range: PartialRangeUpTo<Int>)    -> SubSequence { prefix(range.upperBound) }
+    subscript(_ range: PartialRangeFrom<Int>)    -> SubSequence { suffix(Swift.max(0, count-range.lowerBound)) }
 }
