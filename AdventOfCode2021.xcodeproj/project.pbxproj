@@ -47,6 +47,8 @@
 		F44A65FD2756DED900F246CB /* Day1Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Day1Tests.swift; sourceTree = "<group>"; };
 		F44A65FF2756DEE000F246CB /* Day1_Example.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Day1_Example.txt; sourceTree = "<group>"; };
 		F44A66002756DEE000F246CB /* Day1_MyInput.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Day1_MyInput.txt; sourceTree = "<group>"; };
+		F4C80642275A767900BDE2A6 /* Template */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Template; sourceTree = "<group>"; };
+		F4C80643275A768800BDE2A6 /* MakeFromTemplate.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = MakeFromTemplate.sh; sourceTree = "<group>"; };
 		F4F746E625784933000F3978 /* AdventOfCode2021.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AdventOfCode2021.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4F746EA25784933000F3978 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F4F746EF25784934000F3978 /* AdventOfCode2021Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AdventOfCode2021Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -72,11 +74,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F4C8063F275A764A00BDE2A6 /* Template */ = {
+			isa = PBXGroup;
+			children = (
+				F4C80643275A768800BDE2A6 /* MakeFromTemplate.sh */,
+				F4C80642275A767900BDE2A6 /* Template */,
+			);
+			name = Template;
+			sourceTree = "<group>";
+		};
 		F4F746DC25784933000F3978 = {
 			isa = PBXGroup;
 			children = (
 				F4F746E825784933000F3978 /* AdventOfCode2021 */,
 				F4F746F325784934000F3978 /* AdventOfCode2021Tests */,
+				F4C8063F275A764A00BDE2A6 /* Template */,
 				F4F746E725784933000F3978 /* Products */,
 			);
 			sourceTree = "<group>";
