@@ -15,7 +15,13 @@ sed -i '' "s/DayX_Number/$DAYNUMBER/" "AdventOfCode2021Tests/Day${DAYNUMBER}Test
 sed -i '' "s/DayX/Day$DAYNUMBER/" "AdventOfCode2021Tests/Day${DAYNUMBER}Tests.swift"
 
 touch "AdventOfCode2021Tests/InputData/Day${DAYNUMBER}_Example.txt"
-touch "AdventOfCode2021Tests/InputData/Day${DAYNUMBER}_MyInput.txt"
+if [ -f authcookie.txt ]; then
+  curl "https://adventofcode.com/2021/day/${DAYNUMBER}/input" \
+    -b "session=`cat authcookie.txt`" \
+    -o "AdventOfCode2021Tests/InputData/Day${DAYNUMBER}_MyInput.txt"
+else
+  touch "AdventOfCode2021Tests/InputData/Day${DAYNUMBER}_MyInput.txt"
+fi
 
 echo "Done! Just add to Xcodeproj"
 open "AdventOfCode2021"
