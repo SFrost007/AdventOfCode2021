@@ -17,7 +17,7 @@ class DayXTests: AoCTestCase {
         XCTAssertEqual(DayX.findSomething(in: example.inputData[0]), 123)
         XCTAssertEqual(example.part1(), 123)
         
-        print("Answer for Day DayX_Number Part 1: \(myInput.part1())")
+        printAnswer(day: DayX_Number, part: 1, answer: myInput.part1())
         measure {
             let _ = myInput.part1()
         }
@@ -27,7 +27,7 @@ class DayXTests: AoCTestCase {
         XCTAssertEqual(DayX.findSomething(in: example.inputData[0]), 123)
         XCTAssertEqual(example.part2(), 123)
         
-        print("Answer for Day DayX_Number Part 2: \(myInput.part2())")
+        printAnswer(day: DayX_Number, part: 2, answer: myInput.part2())
         measure {
             let _ = myInput.part2()
         }

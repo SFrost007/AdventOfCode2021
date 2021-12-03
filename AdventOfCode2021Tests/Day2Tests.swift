@@ -16,7 +16,7 @@ class Day2Tests: AoCTestCase {
     func testPart1() {
         XCTAssertEqual(example.part1(), 150)
         
-        print("Answer for Day 2 Part 1: \(myInput.part1())")
+        printAnswer(day: 2, part: 1, answer: myInput.part1())
         measure {
             let _ = myInput.part1()
         }
@@ -25,7 +25,7 @@ class Day2Tests: AoCTestCase {
     func testPart2() {
         XCTAssertEqual(example.part2(), 900)
         
-        print("Answer for Day 2 Part 2: \(myInput.part2())")
+        printAnswer(day: 2, part: 2, answer: myInput.part2())
         measure {
             let _ = myInput.part2()
         }

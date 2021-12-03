@@ -23,4 +23,11 @@ class AoCTestCase: XCTestCase {
         return urlForTestResource("Day\(day)_MyInput", withExtension: "txt")
     }
     
+    func printAnswer(day: Int, part: Int, answer: Any) {
+        let answerString = "Answer for Day \(day) Part \(part): \(answer)"
+        print("┌\(String(repeating: "─", count: answerString.count+2))┐")
+        print("│ \(answerString) │")
+        print("└\(String(repeating: "─", count: answerString.count+2))┘")
+    }
+    
 }

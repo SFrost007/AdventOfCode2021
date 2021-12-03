@@ -20,7 +20,7 @@ class Day3Tests: AoCTestCase {
         XCTAssertEqual(Day3.binaryToDecimal("01001"), 9)
         XCTAssertEqual(example.part1(), 198)
         
-        print("Answer for Day 3 Part 1: \(myInput.part1())")
+        printAnswer(day: 3, part: 1, answer: myInput.part1())
         measure {
             let _ = myInput.part1()
         }
@@ -31,7 +31,7 @@ class Day3Tests: AoCTestCase {
         XCTAssertEqual(Day3.findCO2ScrubberRating(in: example.inputData), "01010")
         XCTAssertEqual(example.part2(), 230)
         
-        print("Answer for Day 3 Part 2: \(myInput.part2())")
+        printAnswer(day: 3, part: 2, answer: myInput.part2())
         measure {
             let _ = myInput.part2()
         }
