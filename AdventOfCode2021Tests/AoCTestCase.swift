@@ -1,10 +1,3 @@
-//
-//  AoCTestCase.swift
-//  AdventOfCode2021Tests
-//
-//  Created by Simon Frost on 03/12/2021.
-//
-
 import XCTest
 
 class AoCTestCase: XCTestCase {

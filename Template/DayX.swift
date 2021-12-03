@@ -1,10 +1,3 @@
-//
-//  DayX.swift
-//  AdventOfCode2021
-//
-//  Created by Simon Frost on DayX_Number/12/2021.
-//
-
 import Foundation
 
 class DayX {

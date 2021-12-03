@@ -1,10 +1,3 @@
-//
-//  Day3.swift
-//  AdventOfCode2021
-//
-//  Created by Simon Frost on 3/12/2021.
-//
-
 import Foundation
 
 class Day3 {

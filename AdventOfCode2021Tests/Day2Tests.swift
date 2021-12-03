@@ -1,10 +1,3 @@
-//
-//  Day2Tests.swift
-//  AdventOfCode2021Tests
-//
-//  Created by Simon Frost on 2/12/2021.
-//
-
 import XCTest
 @testable import AdventOfCode2021
 
