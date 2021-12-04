@@ -54,7 +54,7 @@ class Day4 {
                 let columnCells = numberGrid.compactMap { $0[columnNum] }
                 if columnCells.filter({ !$0.called }).isEmpty { return true }
             }
-            // TODO: Check for diagonal wins. Got away without this for part 1
+            // TODO: Check for diagonal wins. Got away without this for part 1 or part 2 :D
             
             // Board is incomplete
             return false
@@ -86,7 +86,16 @@ class Day4 {
     }
     
     func part2() -> Int {
-        return -1
+        var incompleteBoards = bingoBoards
+        for calledNumber in calledNumbers {
+            incompleteBoards.forEach { $0.handleCalledNumber(calledNumber) }
+            let newIncompleteBoards = incompleteBoards.filter { !$0.isCompleted() }
+            if newIncompleteBoards.isEmpty {
+                return incompleteBoards.first!.sumOfUncalledNumbers() * calledNumber
+            }
+            incompleteBoards = newIncompleteBoards
+        }
+        fatalError("No result found")
     }
     
 }
