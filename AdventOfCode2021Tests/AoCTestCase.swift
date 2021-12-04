@@ -2,6 +2,11 @@ import XCTest
 
 class AoCTestCase: XCTestCase {
     
+    override func setUp() {
+        super.setUp()
+        continueAfterFailure = false
+    }
+    
     private class func urlForTestResource(_ resource: String, withExtension: String) -> URL {
         let testBundle = Bundle(for: NSClassFromString(String(reflecting: Self.self))!)
         return testBundle.url(forResource: resource, withExtension: withExtension)!
