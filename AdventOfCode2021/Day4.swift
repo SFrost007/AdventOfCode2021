@@ -63,8 +63,6 @@ class Day4 {
                 let columnCells = numberGrid.compactMap { $0[columnNum] }
                 if columnCells.filter({ !$0.called }).isEmpty { return true }
             }
-            // TODO: Check for diagonal wins. Got away without this for part 1 or part 2 :D
-            
             // Board is incomplete
             return false
         }
