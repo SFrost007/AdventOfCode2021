@@ -19,8 +19,17 @@ class Day4 {
     
     // MARK: = Data structures
     
-    class BingoBoard {
-        class Cell {
+    class BingoBoard: Copying {
+        required init(original: Day4.BingoBoard) {
+            numberGrid = original.numberGrid.map { $0.clone() }
+        }
+        
+        class Cell: Copying {
+            required init(original: Day4.BingoBoard.Cell) {
+                number = original.number
+                called = original.called
+            }
+            
             var number: Int
             var called: Bool
             
@@ -76,9 +85,10 @@ class Day4 {
     // MARK: - Problem cases
     
     func part1() -> Int {
+        let localBingoBoards = bingoBoards.clone()
         for calledNumber in calledNumbers {
-            bingoBoards.forEach { $0.handleCalledNumber(calledNumber) }
-            if let completedBoard = bingoBoards.filter({ $0.isCompleted() }).first {
+            localBingoBoards.forEach { $0.handleCalledNumber(calledNumber) }
+            if let completedBoard = localBingoBoards.filter({ $0.isCompleted() }).first {
                 return completedBoard.sumOfUncalledNumbers() * calledNumber
             }
         }
@@ -86,7 +96,7 @@ class Day4 {
     }
     
     func part2() -> Int {
-        var incompleteBoards = bingoBoards
+        var incompleteBoards = bingoBoards.clone()
         for calledNumber in calledNumbers {
             incompleteBoards.forEach { $0.handleCalledNumber(calledNumber) }
             let newIncompleteBoards = incompleteBoards.filter { !$0.isCompleted() }
@@ -98,4 +108,27 @@ class Day4 {
         fatalError("No result found")
     }
     
+}
+
+// MARK: - Helpers
+
+// From https://stackoverflow.com/a/34685259/1315601
+fileprivate protocol Copying {
+    init(original: Self)
+}
+
+fileprivate extension Copying {
+    func copy() -> Self {
+        return Self.init(original: self)
+    }
+}
+
+fileprivate extension Array where Element: Copying {
+    func clone() -> Array {
+        var copiedArray = Array<Element>()
+        for element in self {
+            copiedArray.append(element.copy())
+        }
+        return copiedArray
+    }
 }
