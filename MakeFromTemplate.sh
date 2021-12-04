@@ -23,6 +23,33 @@ else
   touch "AdventOfCode2021Tests/InputData/Day${DAYNUMBER}_MyInput.txt"
 fi
 
-echo "Done! Just add to Xcodeproj"
-open "AdventOfCode2021"
-open "AdventOfCode2021Tests"
+if ! gem spec xcodeproj > /dev/null 2>&1; then
+    echo "Done! Just add to Xcodeproj"
+    open "AdventOfCode2021"
+    open "AdventOfCode2021Tests"
+else
+    # From https://shr3jn.medium.com/adding-files-to-your-xcode-project-from-terminal-dabe8402fdb5
+    ruby -e """
+    require 'xcodeproj'
+
+    project = Xcodeproj::Project.open('AdventOfCode2021.xcodeproj')
+
+    group = project.main_group['AdventOfCode2021']
+    file = group.new_file('Day${DAYNUMBER}.swift')
+    main_target = project.targets.first
+    main_target.add_file_references([file])
+
+    testGroup = project.main_group['AdventOfCode2021Tests']
+    testFile = testGroup.new_file('Day${DAYNUMBER}Tests.swift')
+    main_target = project.targets.last
+    main_target.add_file_references([testFile])
+    
+    dataGroup = project.main_group['AdventOfCode2021Tests']['InputData']
+    exampleInput = dataGroup.new_file('Day${DAYNUMBER}_Example.txt')
+    myInput = dataGroup.new_file('Day${DAYNUMBER}_MyInput.txt')
+    main_target = project.targets.last
+    main_target.add_file_references([exampleInput, myInput])
+
+    project.save
+    """
+fi

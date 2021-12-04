@@ -113,11 +113,11 @@
 		F4F746E825784933000F3978 /* AdventOfCode2021 */ = {
 			isa = PBXGroup;
 			children = (
+				F4F746EA25784933000F3978 /* Info.plist */,
 				F44A65FB2756DED100F246CB /* Day1.swift */,
 				F434A7E52758CB390074B8A3 /* Day2.swift */,
 				F434A7F32759DDCE0074B8A3 /* Day3.swift */,
 				F4C80645275B5E6500BDE2A6 /* Day4.swift */,
-				F4F746EA25784933000F3978 /* Info.plist */,
 			);
 			path = AdventOfCode2021;
 			sourceTree = "<group>";
@@ -125,13 +125,13 @@
 		F4F746F325784934000F3978 /* AdventOfCode2021Tests */ = {
 			isa = PBXGroup;
 			children = (
+				F4F746F625784934000F3978 /* Info.plist */,
+				F413EAC92578EB8400CA5BE2 /* AoCTestCase.swift */,
+				F4F7470E257849F5000F3978 /* InputData */,
 				F44A65FD2756DED900F246CB /* Day1Tests.swift */,
 				F434A7EB2758CB790074B8A3 /* Day2Tests.swift */,
 				F434A7F12759DDC40074B8A3 /* Day3Tests.swift */,
 				F4C80647275B5E6F00BDE2A6 /* Day4Tests.swift */,
-				F4F7470E257849F5000F3978 /* InputData */,
-				F4F746F625784934000F3978 /* Info.plist */,
-				F413EAC92578EB8400CA5BE2 /* AoCTestCase.swift */,
 			);
 			path = AdventOfCode2021Tests;
 			sourceTree = "<group>";
