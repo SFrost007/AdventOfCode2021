@@ -58,8 +58,7 @@ class Day4 {
                 if row.filter({ !$0.called }).isEmpty { return true }
             }
             // Check for vertical wins
-            let gridSize = numberGrid.first!.count // Assumes a square grid
-            for columnNum in 0..<gridSize {
+            for columnNum in 0..<numberGrid.first!.count {
                 let columnCells = numberGrid.compactMap { $0[columnNum] }
                 if columnCells.filter({ !$0.called }).isEmpty { return true }
             }
