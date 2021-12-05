@@ -51,13 +51,12 @@ class Day5 {
             } else if startPoint.y == endPoint.y { // Horizontal
                 return (min(startPoint.x,endPoint.x)...max(startPoint.x,endPoint.x)).map { Coord(x: $0, y: startPoint.y) }
             } else { // Diagonal
-                var coords: [Coord] = []
-                for i in 0...abs(startPoint.x - endPoint.x) {
-                    let x = startPoint.x < endPoint.x ? startPoint.x + i : startPoint.x - i
-                    let y = startPoint.y < endPoint.y ? startPoint.y + i : startPoint.y - i
-                    coords.append(Coord(x: x, y: y))
+                return (0...abs(startPoint.x - endPoint.x)).map {
+                    Coord(
+                        x: startPoint.x < endPoint.x ? startPoint.x + $0 : startPoint.x - $0,
+                        y: startPoint.y < endPoint.y ? startPoint.y + $0 : startPoint.y - $0
+                    )
                 }
-                return coords
             }
         }
     }
