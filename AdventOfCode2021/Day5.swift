@@ -17,7 +17,7 @@ class Day5 {
     
     struct Line {
         
-        struct Coord: Equatable, Comparable, Hashable {
+        struct Coord: Hashable {
             let x: Int
             let y: Int
             
@@ -30,17 +30,13 @@ class Day5 {
                 self.x = x
                 self.y = y
             }
-            
-            static func < (lhs: Day5.Line.Coord, rhs: Day5.Line.Coord) -> Bool {
-                return lhs.x < rhs.x || lhs.y < rhs.y
-            }
         }
         
         let startPoint: Coord
         let endPoint: Coord
         
         init(_ string: String) {
-            let coords = string.components(separatedBy: " -> ").map { Coord($0) }.sorted()
+            let coords = string.components(separatedBy: " -> ").map { Coord($0) }
             startPoint = coords.first!
             endPoint = coords.last!
         }
@@ -51,20 +47,26 @@ class Day5 {
         
         var coordsCovered: [Coord] {
             if startPoint.x == endPoint.x { // Vertical
-                return (startPoint.y...endPoint.y).map { Coord(x: startPoint.x, y: $0) }
+                return (min(startPoint.y,endPoint.y)...max(startPoint.y,endPoint.y)).map { Coord(x: startPoint.x, y: $0) }
             } else if startPoint.y == endPoint.y { // Horizontal
-                return (startPoint.x...endPoint.x).map { Coord(x: $0, y: startPoint.y) }
-            } else {
-                fatalError("Not implemented for diagonals")
+                return (min(startPoint.x,endPoint.x)...max(startPoint.x,endPoint.x)).map { Coord(x: $0, y: startPoint.y) }
+            } else { // Diagonal
+                var coords: [Coord] = []
+                for i in 0...abs(startPoint.x - endPoint.x) {
+                    let x = startPoint.x < endPoint.x ? startPoint.x + i : startPoint.x - i
+                    let y = startPoint.y < endPoint.y ? startPoint.y + i : startPoint.y - i
+                    coords.append(Coord(x: x, y: y))
+                }
+                return coords
             }
         }
     }
     
     // MARK: - Problem cases
     
-    func part1() -> Int {
+    func findRepeatedCoords(includeDiagonals: Bool) -> Int {
         lines
-            .filter { $0.isHorizontalOrVertical }
+            .filter { includeDiagonals || $0.isHorizontalOrVertical }
             .flatMap { $0.coordsCovered }
             .reduce(into: [:]) { dict, coord in
                 dict[coord] = dict[coord, default: 0] + 1
@@ -73,8 +75,12 @@ class Day5 {
             .count
     }
     
+    func part1() -> Int {
+        findRepeatedCoords(includeDiagonals: false)
+    }
+    
     func part2() -> Int {
-        fatalError("Not yet implemented")
+        findRepeatedCoords(includeDiagonals: true)
     }
     
 }
