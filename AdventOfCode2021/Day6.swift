@@ -14,23 +14,18 @@ class Day6 {
     
     // MARK: - Problem cases
     
+    // Naive approach works for part 1, but gets out of hand for day 2
     func part1() -> Int {
         var fishAges = inputData
         for _ in 1...80 {
-            fishAges = Self.processDay(fishAges)
+            // Note: This doesn't append new fish to the end like the example, but order doesn't matter
+            fishAges = fishAges.flatMap { $0 > 0 ? [($0 - 1)] : [6, 8] }
         }
         return fishAges.count
     }
     
     func part2() -> Int {
-        fatalError("Not yet implemented")
-    }
-    
-    // MARK: - Worker functions
-    
-    // Note: This doesn't append new fish to the end like the example, but order doesn't matter for part 1
-    static func processDay(_ fishAges: [Int]) -> [Int] {
-        return fishAges.flatMap { $0 > 0 ? [($0 - 1)] : [6, 8] }
+        return -1
     }
     
 }
