@@ -42,7 +42,7 @@ class Day8Tests: AoCTestCase {
         XCTAssertEqual(example.part2(), 61229)
         
         printAnswer(day: 8, part: 2, answer: myInput.part2())
-        measure { XCTAssertEqual(myInput.part2(), -1) }
+        measure { XCTAssertEqual(myInput.part2(), 1004688) }
     }
 
 }

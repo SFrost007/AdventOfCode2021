@@ -57,6 +57,9 @@ class Day8 {
             }
         }
         
+        /// Digits where the number of enabled segments is unique
+        static var uniquelyIdentifiableDigits: [DisplayDigit] { [.one, .four, .seven, .eight] }
+        
         var segmentCount: Int { return enabledSegments.count }
         
         var intValue: Int { return Self.allCases.firstIndex(of: self)! }
@@ -73,8 +76,62 @@ class Day8 {
     
     static func deduceMapping(input: String) -> SegmentMapping {
         var foundMappings: SegmentMapping = [:]
-        // Step 1: Figure out 1, 7, 4, 8 from unique segment counts
-        // Step 2: Figure out what's horizTop from being in 7 and not 1
+        var knownNumbers: [DisplayDigit: Set<Character>] = [:]
+        var unsolvedDigitStrings = input.components(separatedBy: .whitespaces)
+        
+        // Figure out 1, 7, 4, 8 from unique segment counts
+        for digit in DisplayDigit.uniquelyIdentifiableDigits {
+            if let string = unsolvedDigitStrings.first(where: { $0.count == digit.segmentCount }) {
+                knownNumbers[digit] = Set(Array(string))
+                unsolvedDigitStrings = unsolvedDigitStrings.filter { $0.count != digit.segmentCount }
+            }
+        }
+        guard knownNumbers.count == 4 else { fatalError("Failed to identify all unique numbers (1, 7, 8, 9)") }
+        
+        // Find the horizTop segment as it exists in 7 and not 1
+        if let seven = knownNumbers[.seven], let one = knownNumbers[.one] {
+            let horizTopLetter = seven.first { !one.contains($0) }!
+            foundMappings[horizTopLetter] = .horizTop
+        } else { fatalError("Could not find seven and one in input") }
+        
+        // Horizontal segments are the only common segments in all 5-segment digits, and can be uniqued via 4
+        let fiveSegSets = Set(unsolvedDigitStrings.filter { $0.count == 5 }.map { Set(Array($0)) })
+        let fiveSegOccurrenceCount = fiveSegSets.flatMap { Array($0) }.reduce(into: [Character: Int]()) { $0[$1] = $0[$1, default: 0] + 1 }
+        let horizontalSegs = fiveSegOccurrenceCount.filter { $0.value == 3 }.map { $0.key }
+        guard
+            let horizTopLetter = foundMappings.first?.key,
+            let fourDigitSegments = knownNumbers[.four]
+        else { fatalError("Where do we go from here?") }
+        let midBottomLetters = horizontalSegs.filter({ $0 != horizTopLetter })
+        let middleSegment = midBottomLetters.filter { fourDigitSegments.contains($0) }.first!
+        let bottomSegment = midBottomLetters.filter { $0 != middleSegment }.first!
+        foundMappings[middleSegment] = .horizMid
+        foundMappings[bottomSegment] = .horizBot
+        // Now we know the characters in 1,4,7,8 and the segment characters for all the horizontal lines
+        
+        // Zero is the only six-segment character that doesn't include all the horizontal lines
+        let sixSegSets = Set(unsolvedDigitStrings.filter { $0.count == 6 }.map { Set(Array($0)) })
+        knownNumbers[.zero] = sixSegSets.first { !$0.isSuperset(of: horizontalSegs) }
+        let sixAndNinePossibilities = sixSegSets.filter { $0 != knownNumbers[.zero] }
+        // Nine contains all the segments in seven but six doesn't
+        knownNumbers[.nine] = sixAndNinePossibilities.first { $0.isSuperset(of: knownNumbers[.seven]!) }
+        knownNumbers[.six] = sixAndNinePossibilities.first { $0 != knownNumbers[.nine]! }
+        // Now we know the characters in 0, 1, 4, 6, 7, 8, 9 and the segment chars for all horizontal lines. Need 2,3,5.
+        
+        // Six contains all the segments in five, but not 2 and 3
+        knownNumbers[.five] = fiveSegSets.first { knownNumbers[.six]!.isSuperset(of: $0) }
+        let twoAndThreePossibilities = fiveSegSets.filter { $0 != knownNumbers[.five] }
+        // Nine contains all the segments in three but not two
+        knownNumbers[.three] = twoAndThreePossibilities.first { knownNumbers[.nine]!.isSuperset(of: $0) }
+        knownNumbers[.two] = twoAndThreePossibilities.first { $0 != knownNumbers[.three]! }
+        
+        // Now we've identified all the numbers uniquely, and all the horizontal segments, we just need the verticals
+        foundMappings[knownNumbers[.five]!.first { !knownNumbers[.three]!.contains($0)}!] = .leftTop
+        foundMappings[knownNumbers[.two]!.first { !knownNumbers[.nine]!.contains($0)}!] = .leftBot
+        foundMappings[knownNumbers[.nine]!.first { !knownNumbers[.five]!.contains($0)}!] = .rightTop
+        foundMappings[knownNumbers[.one]!.first { !knownNumbers[.two]!.contains($0)}!] = .rightBot
+        
+        // Return the mapping, hope we got everything!
         return foundMappings
     }
     
