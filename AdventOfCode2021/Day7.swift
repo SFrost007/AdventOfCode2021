@@ -26,13 +26,12 @@ class Day7 {
         return minDistance
     }
     
-    // TODO: This is just brute force and took 6 minutes to execute, but gets the right answer
     func part2() -> Int {
         var minDistance = Int.max
         for i in inputData.min()!...inputData.max()! {
             let distance = inputData
                 .map { abs($0-i) }
-                .flatMap { (0...$0).map{$0} }
+                .map { $0 * ($0 + 1) / 2 } // nth triangular number: n * (n+1) / 2
                 .reduce(0, +)
             minDistance = min(distance, minDistance)
         }

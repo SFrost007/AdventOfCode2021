@@ -16,9 +16,8 @@ class Day7Tests: AoCTestCase {
     func testPart2() {
         XCTAssertEqual(example.part2(), 168)
 
-        // TODO: Disabled for now as even though this gets the right answer it takes multiple minutes..
-        //printAnswer(day: 7, part: 2, answer: myInput.part2())
-        //measure { XCTAssertEqual(myInput.part2(), 101268110) }
+        printAnswer(day: 7, part: 2, answer: myInput.part2())
+        measure { XCTAssertEqual(myInput.part2(), 101268110) }
     }
 
 }
