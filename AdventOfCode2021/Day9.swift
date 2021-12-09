@@ -32,7 +32,15 @@ class Day9 {
         return lowPoints.reduce(0, +) + lowPoints.count
     }
     
-    class RowAndRange {
+    class RowAndRange: Equatable, CustomStringConvertible {
+        var description: String {
+            return "\(row): \(range)"
+        }
+        
+        static func == (lhs: Day9.RowAndRange, rhs: Day9.RowAndRange) -> Bool {
+            lhs.row == rhs.row && lhs.range == rhs.range
+        }
+        
         let row: Int
         let range: Range<Int>
         var checkedDeeper: Bool = false
@@ -42,6 +50,7 @@ class Day9 {
             self.range = range
         }
     }
+    typealias Basin = [RowAndRange]
     
     func part2() -> Int {
         // Map the 2d int array into a flat array of contiguous non-9 Ranges paired with the rows they appear on
@@ -50,9 +59,10 @@ class Day9 {
                 .map { RowAndRange(row: line.offset, range: $0) }
         }
         
-        var basins: [[RowAndRange]] = []
+        var basins: [Basin] = []
         while !searchRanges.isEmpty {
-            var basin: [RowAndRange] = [searchRanges.removeFirst()]
+            // Take a range from the front, then keep checking rows below to find ranges that overlap with it
+            var basin: Basin = [searchRanges.removeFirst()]
             while var currentRange = basin.first(where: { !$0.checkedDeeper } ) {
                 while let nextRange = searchRanges.first(where: { $0.row == currentRange.row + 1 && $0.range.overlaps(currentRange.range) }) {
                     searchRanges.removeAll(where: { $0.row == nextRange.row && $0.range == nextRange.range })
@@ -64,8 +74,16 @@ class Day9 {
             basins.append(basin)
         }
         
-        let basinSizes = basins.map { $0.map { $0.range.count }.reduce(0, +) }
-        return basinSizes.sorted().suffix(3).reduce(1, *)
+        // The above only searches downwards, but other basins could overlap upwards. Brute-force search for these :(
+        print("Pre-fix:  \(basins.count): \(Self.getBasinSizes(from: basins).map { "\($0)" }.joined(separator: ","))")
+        while let overlapResult = Self.findOverlaps(in: basins) {
+            var firstBasin = basins.first { $0 == overlapResult.0 }!
+            firstBasin.append(contentsOf: overlapResult.1)
+            basins.removeAll(where: { $0 == overlapResult.1 })
+        }
+        print("Post-fix: \(basins.count): \(Self.getBasinSizes(from: basins).map { "\($0)" }.joined(separator: ","))")
+        
+        return Self.getBasinSizes(from: basins).sorted().suffix(3).reduce(1, *)
     }
     
     // Eg 12394599929 = 0..<3,
@@ -84,6 +102,29 @@ class Day9 {
             ranges.append(lastStart..<intArray.count)
         }
         return ranges
+    }
+    
+    // This is horrendous, an attempt at salvaging an answer from a bad solution to start with
+    static func findOverlaps(in basins: [Basin]) -> (Basin, Basin)? {
+        print("Checking \(basins.count) basins for overlaps")
+        for basin in basins {
+            for otherBasin in basins.filter({ $0 != basin }) {
+                for row in basin {
+                    for otherRow in otherBasin {
+                        if row.range.overlaps(otherRow.range) && abs(row.row - otherRow.row) < 2 {
+                            print("  Found an overlap: \(row) vs \(otherRow)")
+                            return (basin, otherBasin)
+                        }
+                    }
+                }
+            }
+        }
+        print("  None found!")
+        return nil
+    }
+    
+    static func getBasinSizes(from basins: [Basin]) -> [Int] {
+        basins.map { $0.map { $0.range.count }.reduce(0, +) }
     }
     
 }
