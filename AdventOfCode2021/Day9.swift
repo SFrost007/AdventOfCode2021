@@ -33,7 +33,45 @@ class Day9 {
     }
     
     func part2() -> Int {
-        fatalError("Not yet implemented")
+        // Map the 2d int array into a flat array of contiguous non-9 Ranges paired with the rows they appear on
+        typealias RowAndRange = (row: Int, range: Range<Int>)
+        var searchRanges = inputData.enumerated().flatMap { line in
+            Self.nonNineRanges(in: line.element)
+                .map { RowAndRange(row: line.offset, range: $0) }
+        }
+        
+        var basins: [[RowAndRange]] = []
+        while !searchRanges.isEmpty {
+            var currentRange = searchRanges.removeFirst()
+            var basin: [RowAndRange] = [currentRange]
+            while let nextRange = searchRanges.first(where: { $0.row == currentRange.row + 1 && $0.range.overlaps(currentRange.range) }) {
+                searchRanges.removeAll(where: { $0 == nextRange })
+                currentRange = nextRange
+                basin.append(currentRange)
+            }
+            basins.append(basin)
+        }
+        
+        let basinSizes = basins.map { $0.map { $0.range.count }.reduce(0, +) }
+        return basinSizes.sorted().suffix(3).reduce(1, *)
+    }
+    
+    // Eg 12394599929 = 0..<3,
+    static func nonNineRanges(in intArray: [Int]) -> [Range<Int>] {
+        var ranges: [Range<Int>] = []
+        var lastStart = 0
+        for digit in intArray.enumerated() {
+            if digit.element != 9 { continue }
+            if lastStart != digit.offset {
+                ranges.append(lastStart..<digit.offset)
+            }
+            lastStart = digit.offset + 1
+        }
+        // Add the last range if applicable
+        if lastStart < intArray.count {
+            ranges.append(lastStart..<intArray.count)
+        }
+        return ranges
     }
     
 }
