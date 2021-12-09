@@ -32,9 +32,19 @@ class Day9 {
         return lowPoints.reduce(0, +) + lowPoints.count
     }
     
+    class RowAndRange {
+        let row: Int
+        let range: Range<Int>
+        var checkedDeeper: Bool = false
+        
+        init(row: Int, range: Range<Int>) {
+            self.row = row
+            self.range = range
+        }
+    }
+    
     func part2() -> Int {
         // Map the 2d int array into a flat array of contiguous non-9 Ranges paired with the rows they appear on
-        typealias RowAndRange = (row: Int, range: Range<Int>)
         var searchRanges = inputData.enumerated().flatMap { line in
             Self.nonNineRanges(in: line.element)
                 .map { RowAndRange(row: line.offset, range: $0) }
@@ -42,12 +52,14 @@ class Day9 {
         
         var basins: [[RowAndRange]] = []
         while !searchRanges.isEmpty {
-            var currentRange = searchRanges.removeFirst()
-            var basin: [RowAndRange] = [currentRange]
-            while let nextRange = searchRanges.first(where: { $0.row == currentRange.row + 1 && $0.range.overlaps(currentRange.range) }) {
-                searchRanges.removeAll(where: { $0 == nextRange })
-                currentRange = nextRange
-                basin.append(currentRange)
+            var basin: [RowAndRange] = [searchRanges.removeFirst()]
+            while var currentRange = basin.first(where: { !$0.checkedDeeper } ) {
+                while let nextRange = searchRanges.first(where: { $0.row == currentRange.row + 1 && $0.range.overlaps(currentRange.range) }) {
+                    searchRanges.removeAll(where: { $0.row == nextRange.row && $0.range == nextRange.range })
+                    currentRange = nextRange
+                    basin.append(currentRange)
+                }
+                currentRange.checkedDeeper = true
             }
             basins.append(basin)
         }

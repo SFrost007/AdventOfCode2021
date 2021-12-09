@@ -21,6 +21,7 @@ class Day9Tests: AoCTestCase {
         // Test main part 2
         XCTAssertEqual(example.part2(), 1134)
         
+        // First attempt: 903168 (Too low)
         printAnswer(day: 9, part: 2, answer: myInput.part2())
         measure { XCTAssertEqual(myInput.part2(), -1) }
     }
