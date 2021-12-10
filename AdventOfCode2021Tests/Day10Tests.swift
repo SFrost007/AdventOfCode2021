@@ -7,15 +7,13 @@ class Day10Tests: AoCTestCase {
     let myInput = Day10(inputURL: urlForMyInputData(day: 10))
     
     func testPart1() {
-        XCTAssertEqual(Day10.findSomething(in: example.inputData[0]), 123)
-        XCTAssertEqual(example.part1(), 123)
+        XCTAssertEqual(example.part1(), 26397)
         
         printAnswer(day: 10, part: 1, answer: myInput.part1())
-        measure { XCTAssertEqual(myInput.part1(), -1) }
+        measure { XCTAssertEqual(myInput.part1(), 367059) }
     }
     
     func testPart2() {
-        XCTAssertEqual(Day10.findSomething(in: example.inputData[0]), 123)
         XCTAssertEqual(example.part2(), 123)
         
         printAnswer(day: 10, part: 2, answer: myInput.part2())
