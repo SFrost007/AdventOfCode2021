@@ -16,115 +16,55 @@ class Day9 {
     // MARK: - Problem cases
     
     func part1() -> Int {
-        let gridWidth = inputData.first!.count
-        let gridHeight = inputData.count
-        var lowPoints: [Int] = []
-        for x in 0..<gridWidth {
-            for y in 0..<gridHeight {
-                let thisValue = inputData[y][x]
-                if x > 0 && thisValue >= inputData[y][x-1] { continue }
-                if x < gridWidth-1 && thisValue >= inputData[y][x+1] { continue }
-                if y > 0 && thisValue >= inputData[y-1][x] { continue }
-                if y < gridHeight-1 && thisValue >= inputData[y+1][x] { continue }
-                lowPoints.append(thisValue)
-            }
-        }
-        return lowPoints.reduce(0, +) + lowPoints.count
+        let lowPointLocations = Self.findLowPoints(in: inputData)
+        let lowPointValues = lowPointLocations.map { inputData[$0.y][$0.x] }
+        return lowPointValues.reduce(0, +) + lowPointValues.count
     }
-    
-    class RowAndRange: Equatable, CustomStringConvertible {
-        var description: String {
-            return "\(row): \(range)"
-        }
-        
-        static func == (lhs: Day9.RowAndRange, rhs: Day9.RowAndRange) -> Bool {
-            lhs.row == rhs.row && lhs.range == rhs.range
-        }
-        
-        let row: Int
-        let range: Range<Int>
-        var checkedDeeper: Bool = false
-        
-        init(row: Int, range: Range<Int>) {
-            self.row = row
-            self.range = range
-        }
-    }
-    typealias Basin = [RowAndRange]
     
     func part2() -> Int {
-        // Map the 2d int array into a flat array of contiguous non-9 Ranges paired with the rows they appear on
-        var searchRanges = inputData.enumerated().flatMap { line in
-            Self.nonNineRanges(in: line.element)
-                .map { RowAndRange(row: line.offset, range: $0) }
-        }
-        
-        var basins: [Basin] = []
-        while !searchRanges.isEmpty {
-            // Take a range from the front, then keep checking rows below to find ranges that overlap with it
-            var basin: Basin = [searchRanges.removeFirst()]
-            while var currentRange = basin.first(where: { !$0.checkedDeeper } ) {
-                while let nextRange = searchRanges.first(where: { $0.row == currentRange.row + 1 && $0.range.overlaps(currentRange.range) }) {
-                    searchRanges.removeAll(where: { $0.row == nextRange.row && $0.range == nextRange.range })
-                    currentRange = nextRange
-                    basin.append(currentRange)
-                }
-                currentRange.checkedDeeper = true
-            }
-            basins.append(basin)
-        }
-        
-        // The above only searches downwards, but other basins could overlap upwards. Brute-force search for these :(
-        print("Pre-fix:  \(basins.count): \(Self.getBasinSizes(from: basins).map { "\($0)" }.joined(separator: ","))")
-        while let overlapResult = Self.findOverlaps(in: basins) {
-            var firstBasin = basins.first { $0 == overlapResult.0 }!
-            firstBasin.append(contentsOf: overlapResult.1)
-            basins.removeAll(where: { $0 == overlapResult.1 })
-        }
-        print("Post-fix: \(basins.count): \(Self.getBasinSizes(from: basins).map { "\($0)" }.joined(separator: ","))")
-        
-        return Self.getBasinSizes(from: basins).sorted().suffix(3).reduce(1, *)
+        Self.findLowPoints(in: inputData)
+            .map { Self.findBasinLocations(from: $0, currentBasin: [], in: inputData)}
+            .map { $0.count }
+            .sorted()
+            .suffix(3)
+            .reduce(1, *)
     }
     
-    // Eg 12394599929 = 0..<3,
-    static func nonNineRanges(in intArray: [Int]) -> [Range<Int>] {
-        var ranges: [Range<Int>] = []
-        var lastStart = 0
-        for digit in intArray.enumerated() {
-            if digit.element != 9 { continue }
-            if lastStart != digit.offset {
-                ranges.append(lastStart..<digit.offset)
-            }
-            lastStart = digit.offset + 1
-        }
-        // Add the last range if applicable
-        if lastStart < intArray.count {
-            ranges.append(lastStart..<intArray.count)
-        }
-        return ranges
+    // MARK: - Worker functions
+    
+    struct GridLocation: Hashable {
+        let x: Int
+        let y: Int
     }
     
-    // This is horrendous, an attempt at salvaging an answer from a bad solution to start with
-    static func findOverlaps(in basins: [Basin]) -> (Basin, Basin)? {
-        print("Checking \(basins.count) basins for overlaps")
-        for basin in basins {
-            for otherBasin in basins.filter({ $0 != basin }) {
-                for row in basin {
-                    for otherRow in otherBasin {
-                        if row.range.overlaps(otherRow.range) && abs(row.row - otherRow.row) < 2 {
-                            print("  Found an overlap: \(row) vs \(otherRow)")
-                            return (basin, otherBasin)
-                        }
-                    }
-                }
+    static func findLowPoints(in input: [[Int]]) -> [GridLocation] {
+        let gridWidth = input.first!.count
+        let gridHeight = input.count
+        var lowPoints: [GridLocation] = []
+        for x in 0..<gridWidth {
+            for y in 0..<gridHeight {
+                let thisValue = input[y][x]
+                if x > 0 && thisValue >= input[y][x-1] { continue }
+                if x < gridWidth-1 && thisValue >= input[y][x+1] { continue }
+                if y > 0 && thisValue >= input[y-1][x] { continue }
+                if y < gridHeight-1 && thisValue >= input[y+1][x] { continue }
+                lowPoints.append(GridLocation(x: x, y: y))
             }
         }
-        print("  None found!")
-        return nil
+        return lowPoints
     }
     
-    static func getBasinSizes(from basins: [Basin]) -> [Int] {
-        basins.map { $0.map { $0.range.count }.reduce(0, +) }
+    static func findBasinLocations(from location: GridLocation, currentBasin: Set<GridLocation>, in input: [[Int]]) -> Set<GridLocation> {
+        guard !currentBasin.contains(location) else { return [] }
+        guard location.x >= 0, location.x < input.first!.count else { return [] }
+        guard location.y >= 0, location.y < input.count else { return [] }
+        guard input[location.y][location.x] != 9 else { return [] }
+        var newBasin = currentBasin
+        newBasin.insert(location)
+        newBasin = newBasin.union(findBasinLocations(from: GridLocation(x: location.x-1, y: location.y), currentBasin: newBasin, in: input))
+        newBasin = newBasin.union(findBasinLocations(from: GridLocation(x: location.x+1, y: location.y), currentBasin: newBasin, in: input))
+        newBasin = newBasin.union(findBasinLocations(from: GridLocation(x: location.x, y: location.y-1), currentBasin: newBasin, in: input))
+        newBasin = newBasin.union(findBasinLocations(from: GridLocation(x: location.x, y: location.y+1), currentBasin: newBasin, in: input))
+        return newBasin
     }
-    
 }
