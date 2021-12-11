@@ -56,15 +56,18 @@ class Day9 {
     
     static func findBasinLocations(from location: GridLocation, currentBasin: Set<GridLocation>, in input: [[Int]]) -> Set<GridLocation> {
         guard !currentBasin.contains(location) else { return [] }
-        guard location.x >= 0, location.x < input.first!.count else { return [] }
-        guard location.y >= 0, location.y < input.count else { return [] }
-        guard input[location.y][location.x] != 9 else { return [] }
-        var newBasin = currentBasin
-        newBasin.insert(location)
+        guard let value = getValue(at: location, in: input), value != 9 else { return [] }
+        var newBasin = currentBasin.union([location])
         newBasin = newBasin.union(findBasinLocations(from: GridLocation(x: location.x-1, y: location.y), currentBasin: newBasin, in: input))
         newBasin = newBasin.union(findBasinLocations(from: GridLocation(x: location.x+1, y: location.y), currentBasin: newBasin, in: input))
         newBasin = newBasin.union(findBasinLocations(from: GridLocation(x: location.x, y: location.y-1), currentBasin: newBasin, in: input))
         newBasin = newBasin.union(findBasinLocations(from: GridLocation(x: location.x, y: location.y+1), currentBasin: newBasin, in: input))
         return newBasin
+    }
+    
+    static func getValue(at location: GridLocation, in intArray: [[Int]]) -> Int? {
+        guard let firstRow = intArray.first else { return nil }
+        guard (0..<firstRow.count).contains(location.x), (0..<intArray.count).contains(location.y) else { return nil }
+        return intArray[location.y][location.x]
     }
 }
