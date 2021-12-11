@@ -33,7 +33,7 @@ class Day10 {
                 case .incomplete(let brackets): return brackets
                 }
             }
-            .map { (line: [BracketType]) -> Int in
+            .map { (line: [Bracket]) -> Int in
                 var score = 0
                 line.reversed().forEach { score = score * 5 + $0.closingScore }
                 return score
@@ -44,34 +44,7 @@ class Day10 {
     
     // MARK: - Worker functions
     
-    enum BracketType {
-        case regular
-        case square
-        case curly
-        case angled
-        
-        // Part 1
-        var points: Int {
-            switch self {
-            case .regular: return 3
-            case .square: return 57
-            case .curly: return 1197
-            case .angled: return 25137
-            }
-        }
-        
-        // Part 2
-        var closingScore: Int {
-            switch self {
-            case .regular: return 1
-            case .square: return 2
-            case .curly: return 3
-            case .angled: return 4
-            }
-        }
-    }
-    
-    enum BracketChar: String.Element {
+    enum Bracket: String.Element {
         case openRegular = "("
         case openSquare = "["
         case openCurly = "{"
@@ -81,11 +54,11 @@ class Day10 {
         case closeCurly = "}"
         case closeAngled = ">"
         
-        var isOpening: Bool {
-            switch self {
-            case .openRegular, .openSquare, .openCurly, .openAngled: return true
-            case .closeRegular, .closeSquare, .closeCurly, .closeAngled: return false
-            }
+        enum BracketType {
+            case regular
+            case square
+            case curly
+            case angled
         }
         
         var type: BracketType {
@@ -96,21 +69,48 @@ class Day10 {
             case .openAngled, .closeAngled: return .angled
             }
         }
+        
+        var isOpening: Bool {
+            switch self {
+            case .openRegular, .openSquare, .openCurly, .openAngled: return true
+            case .closeRegular, .closeSquare, .closeCurly, .closeAngled: return false
+            }
+        }
+        
+        // Part 1
+        var points: Int {
+            switch self.type {
+            case .regular: return 3
+            case .square: return 57
+            case .curly: return 1197
+            case .angled: return 25137
+            }
+        }
+        
+        // Part 2
+        var closingScore: Int {
+            switch self.type {
+            case .regular: return 1
+            case .square: return 2
+            case .curly: return 3
+            case .angled: return 4
+            }
+        }
     }
     
     enum ValidationResult {
         case valid
-        case incomplete([BracketType])
-        case corrupted(BracketType)
+        case incomplete([Bracket])
+        case corrupted(Bracket)
     }
     
     static func validateLine(_ line: String) -> ValidationResult {
-        var openedBrackets: [BracketType] = []
-        for bracketChar in line.compactMap({ BracketChar(rawValue: $0) }) {
-            if bracketChar.isOpening {
-                openedBrackets.append(bracketChar.type)
-            } else if openedBrackets.popLast() != bracketChar.type {
-                return .corrupted(bracketChar.type)
+        var openedBrackets: [Bracket] = []
+        for bracket in line.compactMap({ Bracket(rawValue: $0) }) {
+            if bracket.isOpening {
+                openedBrackets.append(bracket)
+            } else if openedBrackets.popLast()?.type != bracket.type {
+                return .corrupted(bracket)
             }
         }
         return openedBrackets.isEmpty ? .valid : .incomplete(openedBrackets)
