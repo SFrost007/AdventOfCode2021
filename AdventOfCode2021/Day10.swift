@@ -16,9 +16,8 @@ class Day10 {
     
     func part1() -> Int {
         inputData
-            .map { Self.validateLine($0) }
             .compactMap {
-                switch $0 {
+                switch Self.validateLine($0) {
                 case .valid, .incomplete(_): return nil
                 case .corrupted(let bracketType): return bracketType.points
                 }
