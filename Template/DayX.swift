@@ -20,10 +20,4 @@ class DayX {
         fatalError("Not yet implemented")
     }
     
-    // MARK: - Worker functions
-    
-    static func findSomething(in input: String) -> Int {
-        return -1
-    }
-    
 }
