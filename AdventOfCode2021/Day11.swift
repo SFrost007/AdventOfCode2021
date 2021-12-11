@@ -31,7 +31,22 @@ class Day11 {
     }
     
     func part2() -> Int {
-        fatalError("Not yet implemented")
+        var currentState = inputData
+        var step = 1
+        while true {
+            var flashes: Int = 0
+            currentState  = Self.incrementAllValues(in: currentState)
+            var lastFlashCount = -1
+            while lastFlashCount != 0 {
+                (currentState, lastFlashCount) = Self.incrementNeighboursOfFlashing(in: currentState)
+                flashes += lastFlashCount
+            }
+            currentState = Self.resetFlashedOctopussesToZero(in: currentState)
+            if flashes == inputData.first!.count * inputData.count {
+                return step
+            }
+            step += 1
+        }
     }
     
     // MARK: - Helper functions
