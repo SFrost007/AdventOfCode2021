@@ -26,23 +26,21 @@ class Day10 {
             .reduce(0, +)
     }
     
-    // TODO: Would be nice to do this fully functionally
     func part2() -> Int {
-        let incompleteLines: [[BracketType]] = inputData
+        inputData
             .compactMap {
                 switch Self.validateLine($0) {
                 case .valid, .corrupted(_): return nil
                 case .incomplete(let brackets): return brackets
                 }
             }
-        
-        let lineScores = incompleteLines.map { (line) -> Int in
-            var score: Int = 0
-            line.reversed().forEach { score = score * 5 + $0.closingScore }
-            return score
-        }
-        
-        return lineScores.sorted()[(lineScores.count-1)/2]
+            .map { (line: [BracketType]) -> Int in
+                var score = 0
+                line.reversed().forEach { score = score * 5 + $0.closingScore }
+                return score
+            }
+            .sorted()
+            .middle! // Uses helper extension below
     }
     
     // MARK: - Worker functions
@@ -119,4 +117,13 @@ class Day10 {
         return openedBrackets.isEmpty ? .valid : .incomplete(openedBrackets)
     }
     
+}
+
+// MARK: - Helpers
+
+fileprivate extension Array {
+    var middle: Element? {
+        guard count > 0 else { return nil }
+        return self[(self.count-1) / 2]
+    }
 }
