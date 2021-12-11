@@ -48,7 +48,7 @@ else
     exampleInput = dataGroup.new_file('Day${DAYNUMBER}_Example.txt')
     myInput = dataGroup.new_file('Day${DAYNUMBER}_MyInput.txt')
     main_target = project.targets.last
-    main_target.add_file_references([exampleInput, myInput])
+    main_target.add_resources([exampleInput, myInput])
 
     project.save
     """
