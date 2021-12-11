@@ -26,26 +26,22 @@ class Day10 {
             .reduce(0, +)
     }
     
+    // TODO: Would be nice to do this fully functionally
     func part2() -> Int {
-        // TODO: Would be nice to do this fully functionally, but returning from some cases in the switch statement causes problems
-        var incompleteLines: [[BracketType]] = []
-        inputData
-            .map { Self.validateLine($0) }
-            .forEach {
-                switch $0 {
-                case .valid, .corrupted(_): break
-                case .incomplete(let brackets): incompleteLines.append(brackets)
+        let incompleteLines: [[BracketType]] = inputData
+            .compactMap {
+                switch Self.validateLine($0) {
+                case .valid, .corrupted(_): return nil
+                case .incomplete(let brackets): return brackets
                 }
             }
         
-        var lineScores: [Int] = []
-        for line in incompleteLines {
-            var score = 0
-            line.reversed().forEach {
-                score = score * 5 + $0.closingScore
-            }
-            lineScores.append(score)
+        let lineScores = incompleteLines.map { (line) -> Int in
+            var score: Int = 0
+            line.reversed().forEach { score = score * 5 + $0.closingScore }
+            return score
         }
+        
         return lineScores.sorted()[(lineScores.count-1)/2]
     }
     
