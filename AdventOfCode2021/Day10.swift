@@ -19,7 +19,7 @@ class Day10 {
             .map { Self.validateLine($0) }
             .compactMap {
                 switch $0 {
-                case .valid, .incomplete: return nil
+                case .valid, .incomplete(_): return nil
                 case .corrupted(let bracketType): return bracketType.points
                 }
             }
@@ -27,7 +27,26 @@ class Day10 {
     }
     
     func part2() -> Int {
-        fatalError("Not yet implemented")
+        // TODO: Would be nice to do this fully functionally, but returning from some cases in the switch statement causes problems
+        var incompleteLines: [[BracketType]] = []
+        inputData
+            .map { Self.validateLine($0) }
+            .forEach {
+                switch $0 {
+                case .valid, .corrupted(_): break
+                case .incomplete(let brackets): incompleteLines.append(brackets)
+                }
+            }
+        
+        var lineScores: [Int] = []
+        for line in incompleteLines {
+            var score = 0
+            line.reversed().forEach {
+                score = score * 5 + $0.closingScore
+            }
+            lineScores.append(score)
+        }
+        return lineScores.sorted()[(lineScores.count-1)/2]
     }
     
     // MARK: - Worker functions
@@ -38,12 +57,23 @@ class Day10 {
         case curly
         case angled
         
+        // Part 1
         var points: Int {
             switch self {
             case .regular: return 3
             case .square: return 57
             case .curly: return 1197
             case .angled: return 25137
+            }
+        }
+        
+        // Part 2
+        var closingScore: Int {
+            switch self {
+            case .regular: return 1
+            case .square: return 2
+            case .curly: return 3
+            case .angled: return 4
             }
         }
     }
@@ -77,7 +107,7 @@ class Day10 {
     
     enum ValidationResult {
         case valid
-        case incomplete
+        case incomplete([BracketType])
         case corrupted(BracketType)
     }
     
@@ -90,7 +120,7 @@ class Day10 {
                 return .corrupted(bracketChar.type)
             }
         }
-        return openedBrackets.isEmpty ? .valid : .incomplete
+        return openedBrackets.isEmpty ? .valid : .incomplete(openedBrackets)
     }
     
 }
