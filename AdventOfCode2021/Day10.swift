@@ -34,9 +34,7 @@ class Day10 {
                 }
             }
             .map { (line: [Bracket]) -> Int in
-                var score = 0
-                line.reversed().forEach { score = score * 5 + $0.closingScore }
-                return score
+                line.reversed().reduce(0) { $0 * 5 + $1.closingScore }
             }
             .sorted()
             .middle! // Uses helper extension below
