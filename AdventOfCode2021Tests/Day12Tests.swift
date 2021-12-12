@@ -33,7 +33,7 @@ class Day12Tests: AoCTestCase {
         XCTAssertEqual(example3.part2(), 3509)
         
         printAnswer(day: 12, part: 2, answer: myInput.part2())
-        measure { XCTAssertEqual(myInput.part2(), -1) }
+        measure { XCTAssertEqual(myInput.part2(), 98796) }
     }
 
 }

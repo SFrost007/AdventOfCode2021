@@ -38,43 +38,35 @@ class Day12 {
             node.connections.append(self)
         }
         
-        var isUppercase: Bool { name.uppercased() == name }
-        
         static func == (lhs: Day12.Node, rhs: Day12.Node) -> Bool {
             return lhs.name == rhs.name
         }
     }
     
-    // MARK: - Part 1
+    // MARK: - Problem cases
     
     func part1() -> Int {
-        Self.pathsFromVisiting(node: nodeLookup["start"]!, in: nodeLookup, visited: [])
-            .filter { $0.last == "end" }
-            .count
+        Self.pathCount(nodes: nodeLookup, allowDoubleVisit: false)
     }
-    
-    static func pathsFromVisiting(node: Node, in lookup: [String: Node], visited: [String]) -> [[String]] {
-        guard node.isUppercase || !visited.contains(node.name) else { return [visited] }
-        guard node.name != "end" else { return [visited + ["end"]] }
-        return node.connections.flatMap {
-            pathsFromVisiting(node: $0, in: lookup, visited: visited + [node.name])
-        }
-    }
-    
-    // MARK: - Part 2
     
     func part2() -> Int {
-        Self.pathsFromDoubleVisiting(node: nodeLookup["start"]!, in: nodeLookup, visited: [], doubleVisited: false)
+        Self.pathCount(nodes: nodeLookup, allowDoubleVisit: true)
+    }
+    
+    // MARK: - Worker functions
+    
+    static func pathCount(nodes: [String: Node], allowDoubleVisit: Bool) -> Int {
+        Self.pathsFromVisiting(node: nodes["start"]!, in: nodes, visited: [], doubleVisited: !allowDoubleVisit)
             .filter { $0.last == "end" }
             .count
     }
     
-    static func pathsFromDoubleVisiting(node: Node, in lookup: [String: Node], visited: [String], doubleVisited: Bool) -> [[String]] {
+    static func pathsFromVisiting(node: Node, in lookup: [String: Node], visited: [String], doubleVisited: Bool) -> [[String]] {
         guard canVisitNode(name: node.name, visited: visited, doubleVisited: doubleVisited) else { return [visited] }
         guard node.name != "end" else { return [visited + ["end"]] }
         let newDoubleVisited = doubleVisited || (node.name.isLowercased() && visited.contains(node.name))
         return node.connections.flatMap {
-            pathsFromDoubleVisiting(node: $0, in: lookup, visited: visited + [node.name], doubleVisited: newDoubleVisited)
+            pathsFromVisiting(node: $0, in: lookup, visited: visited + [node.name], doubleVisited: newDoubleVisited)
         }
     }
     
