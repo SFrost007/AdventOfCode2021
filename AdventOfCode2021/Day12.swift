@@ -7,18 +7,14 @@ class Day12 {
     let nodeLookup: [String: Node]
     
     init(inputURL: URL) {
-        var nodeCache: [String: Node] = [:]
-        try! String(contentsOf: inputURL)
+        nodeLookup = try! String(contentsOf: inputURL)
             .components(separatedBy: .newlines)
             .filter { !$0.isEmpty }
-            .forEach {
-                let nodes = $0
-                    .components(separatedBy: "-")
-                    .map { nodeCache[$0] ?? Node(name: $0) }
+            .reduce(into: [:]) { (dict, line) in
+                let nodes = line.components(separatedBy: "-").map { dict[$0] ?? Node(name: $0) }
                 nodes.first!.addConnection(to: nodes.last!)
-                nodes.forEach { nodeCache[$0.name] = $0 }
+                nodes.forEach { dict[$0.name] = $0 }
             }
-        nodeLookup = nodeCache
     }
     
     // MARK: - Data Structure
