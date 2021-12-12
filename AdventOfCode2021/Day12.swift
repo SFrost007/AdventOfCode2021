@@ -45,16 +45,12 @@ class Day12 {
         }
     }
     
-    // MARK: - Problem cases
+    // MARK: - Part 1
     
     func part1() -> Int {
         Self.pathsFromVisiting(node: nodeLookup["start"]!, in: nodeLookup, visited: [])
             .filter { $0.last == "end" }
             .count
-    }
-    
-    func part2() -> Int {
-        fatalError("Not yet implemented")
     }
     
     static func pathsFromVisiting(node: Node, in lookup: [String: Node], visited: [String]) -> [[String]] {
@@ -65,4 +61,34 @@ class Day12 {
         }
     }
     
+    // MARK: - Part 2
+    
+    func part2() -> Int {
+        Self.pathsFromDoubleVisiting(node: nodeLookup["start"]!, in: nodeLookup, visited: [], doubleVisited: false)
+            .filter { $0.last == "end" }
+            .count
+    }
+    
+    static func pathsFromDoubleVisiting(node: Node, in lookup: [String: Node], visited: [String], doubleVisited: Bool) -> [[String]] {
+        guard canVisitNode(name: node.name, visited: visited, doubleVisited: doubleVisited) else { return [visited] }
+        guard node.name != "end" else { return [visited + ["end"]] }
+        let newDoubleVisited = doubleVisited || (node.name.isLowercased() && visited.contains(node.name))
+        return node.connections.flatMap {
+            pathsFromDoubleVisiting(node: $0, in: lookup, visited: visited + [node.name], doubleVisited: newDoubleVisited)
+        }
+    }
+    
+    static func canVisitNode(name: String, visited: [String], doubleVisited: Bool) -> Bool {
+        guard !name.isUppercased() else { return true }
+        guard (name != "start" && name != "end") else { return !visited.contains(name) }
+        guard doubleVisited else { return true }
+        return !visited.contains(name)
+    }
+}
+
+// MARK: - Helper extensions
+
+fileprivate extension String {
+    func isUppercased() -> Bool { return self.uppercased() == self }
+    func isLowercased() -> Bool { return self.lowercased() == self }
 }

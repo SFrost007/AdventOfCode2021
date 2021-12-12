@@ -28,7 +28,9 @@ class Day12Tests: AoCTestCase {
     }
     
     func testPart2() {
-        XCTAssertEqual(example1.part2(), 123)
+        XCTAssertEqual(example1.part2(), 36)
+        XCTAssertEqual(example2.part2(), 103)
+        XCTAssertEqual(example3.part2(), 3509)
         
         printAnswer(day: 12, part: 2, answer: myInput.part2())
         measure { XCTAssertEqual(myInput.part2(), -1) }
