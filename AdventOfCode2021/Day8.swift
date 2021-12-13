@@ -74,6 +74,9 @@ class Day8 {
         return intArrayToInt(outputDigits)
     }
     
+    /// Note: With hindsight this goes far beyond what was required for the puzzle. This determines the full mapping of
+    /// letters to specific segments, rather than just which sets of letters correspond to a given number.
+    /// But the code can stay for posterity :)
     static func deduceMapping(input: String) -> SegmentMapping {
         var foundMappings: SegmentMapping = [:]
         var knownNumbers: [DisplayDigit: Set<Character>] = [:]
