@@ -19,10 +19,9 @@ class Day13Tests: AoCTestCase {
     }
     
     func testPart2() {
-        XCTAssertEqual(example.part2(), 123)
-        
+        // Note: This isn't really unit testable due to outputting ascii art, but my answer was "EAHKRECP"
         printAnswer(day: 13, part: 2, answer: myInput.part2())
-        measure { XCTAssertEqual(myInput.part2(), -1) }
+        measure { XCTAssertEqual(myInput.part2(), 0) }
     }
 
 }

@@ -45,7 +45,12 @@ class Day13 {
     }
     
     func part2() -> Int {
-        fatalError("Not yet implemented")
+        var currentDots = dots
+        instructions.forEach { currentDots = Self.getNewDots(from: currentDots, after: $0) }
+        print("Answer for Day 13 Part 2:\n")
+        Self.printGrid(from: currentDots)
+        print("\n")
+        return 0 // Not really unit testable
     }
     
     // MARK: - Helper functions
@@ -62,6 +67,17 @@ class Day13 {
                 let newValue = instruction.value - (dot.y - instruction.value)
                 return Dot(x: dot.x, y: newValue)
             }
+        }
+    }
+    
+    static func printGrid(from dots: [Dot]) {
+        let paperWidth = dots.map { $0.x }.max()!
+        let paperHeight = dots.map { $0.y }.max()!
+        for y in 0...paperHeight {
+            let rowString = (0...paperWidth)
+                .map { x in dots.contains(where: { $0.x == x && $0.y == y }) ? "X" : " " }
+                .joined(separator: "")
+            print(rowString)
         }
     }
     
