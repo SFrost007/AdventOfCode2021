@@ -41,22 +41,20 @@ class Day13 {
     // MARK: - Problem cases
     
     func part1() -> Int {
-        Set(Self.getNewDots(from: dots, after: instructions.first!)).count
+        Self.getNewDots(from: dots, after: instructions.first!).count
     }
     
     func part2() -> Int {
         var currentDots = dots
         instructions.forEach { currentDots = Self.getNewDots(from: currentDots, after: $0) }
-        print("Answer for Day 13 Part 2:\n")
-        Self.printGrid(from: currentDots)
-        print("\n")
+        Self.printGrid(from: currentDots, heading: "Answer for Day 13 Part 2:")
         return 0 // Not really unit testable
     }
     
     // MARK: - Helper functions
     
     static func getNewDots(from dots: [Dot], after instruction: FoldInstruction) -> [Dot] {
-        dots.map { (dot) -> Dot in
+        let newDots = dots.map { (dot) -> Dot in
             switch instruction.axis {
             case .x:
                 guard dot.x > instruction.value else { return dot }
@@ -68,9 +66,11 @@ class Day13 {
                 return Dot(x: dot.x, y: newValue)
             }
         }
+        return Array(Set(newDots)) // Only return unique dots
     }
     
-    static func printGrid(from dots: [Dot]) {
+    static func printGrid(from dots: [Dot], heading: String) {
+        print("\(heading)\n")
         let paperWidth = dots.map { $0.x }.max()!
         let paperHeight = dots.map { $0.y }.max()!
         for y in 0...paperHeight {
@@ -79,6 +79,7 @@ class Day13 {
                 .joined(separator: "")
             print(rowString)
         }
+        print("\n")
     }
     
 }
