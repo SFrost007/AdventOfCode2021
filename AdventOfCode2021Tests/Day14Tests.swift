@@ -13,10 +13,15 @@ class Day14Tests: AoCTestCase {
     }
     
     func testPart1() {
-        XCTAssertEqual(example.part1(), 1588)
+        // Test worker functions
+        XCTAssertEqual(Day14.processStep(input: "NNCB", rules: example.rules), "NCNBCHB")
+        XCTAssertEqual(Day14.processStep(input: "NCNBCHB", rules: example.rules), "NBCCNBBBCBHCB")
+        XCTAssertEqual(Day14.findLetterCounts(in: "AAAABBCA"), ["A": 5, "B": 2, "C": 1])
         
+        // Test actual part 1
+        XCTAssertEqual(example.part1(), 1588)
         printAnswer(day: 14, part: 1, answer: myInput.part1())
-        measure { XCTAssertEqual(myInput.part1(), -1) }
+        measure { XCTAssertEqual(myInput.part1(), 3247) }
     }
     
     func testPart2() {
