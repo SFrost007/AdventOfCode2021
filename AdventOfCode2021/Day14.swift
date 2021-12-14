@@ -50,33 +50,41 @@ class Day14 {
         let depth: Int
         let parentChars: CharPair
     }
-    static var lookupCache: [CacheKey: CharacterCounts] = [:]
     
     static func findAnswer(input: String, rules: RulesDict, iterations: Int) -> Int {
-        // Clear cache
-        lookupCache = [:]
+        // This is the magic part. Cache the result of any pair of parent characters at a given depth.
+        var lookupCache: [CacheKey: CharacterCounts] = [:]
         
-        var characterCounts = input.reduce(into: [:], { $0[$1] = $0[$1, default: 0] + 1 } )
-        
+        // Calculate all child counts from each pair of characters in the input string
         let charPairs = (0..<input.count-1).map { CharPair(input[$0], input[$0+1]) }
-        let childCounts = charPairs.map { getCharacterCounts(from: $0, rules: rules, currentDepth: 0, maxDepth: iterations) }
+        let childCounts = charPairs.map { getCharacterCounts(from: $0, rules: rules, currentDepth: 0, maxDepth: iterations, lookupCache: &lookupCache) }
+        
+        // Create a "root" count from the input string and add all the child counts to it
+        var characterCounts = input.reduce(into: [:], { $0[$1] = $0[$1, default: 0] + 1 } )
         childCounts.forEach { mergeDictionary($0, into: &characterCounts)}
         
+        // Calculate the end result
         let sortedCounts = characterCounts
             .map { $0.value }
             .sorted()
         return sortedCounts.last! - sortedCounts.first!
     }
     
-    static func getCharacterCounts(from parents: CharPair, rules: RulesDict, currentDepth: Int, maxDepth: Int) -> CharacterCounts {
+    static func getCharacterCounts(
+        from parents: CharPair,
+        rules: RulesDict,
+        currentDepth: Int,
+        maxDepth: Int,
+        lookupCache: inout [CacheKey: CharacterCounts]
+    ) -> CharacterCounts {
         guard currentDepth < maxDepth else { return [:] }
         
         let lookupKey = CacheKey(depth: currentDepth, parentChars: parents)
         if let cachedValue = lookupCache[lookupKey] { return cachedValue }
         
         guard let child = rules[parents] else { fatalError("Missing rule for \(parents.first)\(parents.second)") }
-        let lhs = getCharacterCounts(from: CharPair(parents.first, child), rules: rules, currentDepth: currentDepth+1, maxDepth: maxDepth)
-        let rhs = getCharacterCounts(from: CharPair(child, parents.second), rules: rules, currentDepth: currentDepth+1, maxDepth: maxDepth)
+        let lhs = getCharacterCounts(from: CharPair(parents.first, child), rules: rules, currentDepth: currentDepth+1, maxDepth: maxDepth, lookupCache: &lookupCache)
+        let rhs = getCharacterCounts(from: CharPair(child, parents.second), rules: rules, currentDepth: currentDepth+1, maxDepth: maxDepth, lookupCache: &lookupCache)
         
         var result: CharacterCounts = [child: 1]
         mergeDictionary(lhs, into: &result)
