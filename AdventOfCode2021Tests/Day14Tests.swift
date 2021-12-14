@@ -9,7 +9,7 @@ class Day14Tests: AoCTestCase {
     func testParsing() {
         XCTAssertEqual(example.template, "NNCB")
         XCTAssertEqual(example.rules.count, 16)
-        XCTAssertEqual(example.rules[["N", "B"]], "B")
+        XCTAssertEqual(example.rules[Day14.CharPair("N", "B")], "B")
     }
     
     func testPart1() {
@@ -19,9 +19,9 @@ class Day14Tests: AoCTestCase {
     }
     
     func testPart2() {
-        //XCTAssertEqual(example.part2(), 2188189693529)
+        XCTAssertEqual(example.part2(), 2188189693529)
         printAnswer(day: 14, part: 2, answer: myInput.part2())
-        //measure { XCTAssertEqual(myInput.part2(), -1) }
+        measure { XCTAssertEqual(myInput.part2(), 4110568157153) }
     }
 
 }
