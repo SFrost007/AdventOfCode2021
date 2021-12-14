@@ -55,13 +55,14 @@ class Day14 {
         // This is the magic part. Cache the result of any pair of parent characters at a given depth.
         var lookupCache: [CacheKey: CharacterCounts] = [:]
         
-        // Calculate all child counts from each pair of characters in the input string
-        let charPairs = (0..<input.count-1).map { CharPair(input[$0], input[$0+1]) }
-        let childCounts = charPairs.map { getCharacterCounts(from: $0, rules: rules, currentDepth: 0, maxDepth: iterations, lookupCache: &lookupCache) }
-        
-        // Create a "root" count from the input string and add all the child counts to it
+        // Create the root dictionary and add all characters in the initial string to it
         var characterCounts = input.reduce(into: [:], { $0[$1] = $0[$1, default: 0] + 1 } )
-        childCounts.forEach { mergeDictionary($0, into: &characterCounts)}
+        
+        // Calculate all child counts from each pair of characters in the input string and merge into the dictionary
+        (0..<input.count-1)
+            .map { CharPair(input[$0], input[$0+1]) } // Map to pairs of letters, e.g. "ABCD" -> ["AB", "BC, "CD"]
+            .map { getCharacterCounts(from: $0, rules: rules, currentDepth: 0, maxDepth: iterations, lookupCache: &lookupCache) }
+            .forEach { mergeDictionary($0, into: &characterCounts)}
         
         // Calculate the end result
         let sortedCounts = characterCounts
@@ -77,22 +78,28 @@ class Day14 {
         maxDepth: Int,
         lookupCache: inout [CacheKey: CharacterCounts]
     ) -> CharacterCounts {
-        guard currentDepth < maxDepth else { return [:] }
-        
+        // If we have a value already in the cache (for the given parent pair and depth) just return that
         let lookupKey = CacheKey(depth: currentDepth, parentChars: parents)
         if let cachedValue = lookupCache[lookupKey] { return cachedValue }
         
-        guard let child = rules[parents] else { fatalError("Missing rule for \(parents.first)\(parents.second)") }
-        let lhs = getCharacterCounts(from: CharPair(parents.first, child), rules: rules, currentDepth: currentDepth+1, maxDepth: maxDepth, lookupCache: &lookupCache)
-        let rhs = getCharacterCounts(from: CharPair(child, parents.second), rules: rules, currentDepth: currentDepth+1, maxDepth: maxDepth, lookupCache: &lookupCache)
-        
+        // Otherwise look up the new child value from the rules dictionary and set its initial count to 1
+        let child = rules[parents]!
         var result: CharacterCounts = [child: 1]
-        mergeDictionary(lhs, into: &result)
-        mergeDictionary(rhs, into: &result)
+        
+        // If we're not already bottomed out, recursively find and merge in the child counts
+        if currentDepth + 1 < maxDepth {
+            let lhs = getCharacterCounts(from: CharPair(parents.first, child), rules: rules, currentDepth: currentDepth+1, maxDepth: maxDepth, lookupCache: &lookupCache)
+            let rhs = getCharacterCounts(from: CharPair(child, parents.second), rules: rules, currentDepth: currentDepth+1, maxDepth: maxDepth, lookupCache: &lookupCache)
+            mergeDictionary(lhs, into: &result)
+            mergeDictionary(rhs, into: &result)
+        }
+        
+        // Populate the cache and return
         lookupCache[lookupKey] = result
         return result
     }
     
+    /// Not strictly necessary as it's only wrapping a one-liner, but ensures consistency
     static func mergeDictionary(_ addingDictionary: CharacterCounts, into rootDictionary: inout CharacterCounts) {
         rootDictionary = rootDictionary.merging(addingDictionary, uniquingKeysWith: +)
     }
@@ -103,10 +110,5 @@ class Day14 {
 
 // From https://stackoverflow.com/questions/24092884/get-nth-character-of-a-string-in-swift-programming-language/38215613#38215613
 fileprivate extension StringProtocol {
-    subscript(_ offset: Int)                     -> Element     { self[index(startIndex, offsetBy: offset)] }
-    subscript(_ range: Range<Int>)               -> SubSequence { prefix(range.lowerBound+range.count).suffix(range.count) }
-    subscript(_ range: ClosedRange<Int>)         -> SubSequence { prefix(range.lowerBound+range.count).suffix(range.count) }
-    subscript(_ range: PartialRangeThrough<Int>) -> SubSequence { prefix(range.upperBound.advanced(by: 1)) }
-    subscript(_ range: PartialRangeUpTo<Int>)    -> SubSequence { prefix(range.upperBound) }
-    subscript(_ range: PartialRangeFrom<Int>)    -> SubSequence { suffix(Swift.max(0, count-range.lowerBound)) }
+    subscript(_ offset: Int) -> Element { self[index(startIndex, offsetBy: offset)] }
 }
