@@ -9,14 +9,16 @@ class Day14Tests: AoCTestCase {
     func testParsing() {
         XCTAssertEqual(example.template, "NNCB")
         XCTAssertEqual(example.rules.count, 16)
-        XCTAssertEqual(example.rules["NB"], "B")
+        XCTAssertEqual(example.rules[["N", "B"]], "B")
     }
     
     func testPart1() {
         // Test worker functions
-        XCTAssertEqual(Day14.processStep(input: "NNCB", rules: example.rules), "NCNBCHB")
-        XCTAssertEqual(Day14.processStep(input: "NCNBCHB", rules: example.rules), "NBCCNBBBCBHCB")
-        XCTAssertEqual(Day14.findLetterCounts(in: "AAAABBCA"), ["A": 5, "B": 2, "C": 1])
+        XCTAssertEqual(Day14.getCharArray(input: "NNCB", rules: example.rules, iterations: 1), Array("NCNBCHB"))
+        XCTAssertEqual(Day14.getCharArray(input: "NCNBCHB", rules: example.rules, iterations: 1), Array("NBCCNBBBCBHCB"))
+        XCTAssertEqual(Day14.getCharArray(input: "NNCB", rules: example.rules, iterations: 2), Array("NBCCNBBBCBHCB"))
+        XCTAssertEqual(Day14.getCharArray(input: "NNCB", rules: example.rules, iterations: 3), Array("NBBBCNCCNBBNBNBBCHBHHBCHB"))
+        XCTAssertEqual(Day14.findLetterCounts(in: Array("AAAABBCA")), ["A": 5, "B": 2, "C": 1])
         
         // Test actual part 1
         XCTAssertEqual(example.part1(), 1588)
@@ -25,7 +27,7 @@ class Day14Tests: AoCTestCase {
     }
     
     func testPart2() {
-        XCTAssertEqual(example.part2(), 123)
+        XCTAssertEqual(example.part2(), 2188189693529)
         
         printAnswer(day: 14, part: 2, answer: myInput.part2())
         measure { XCTAssertEqual(myInput.part2(), -1) }
