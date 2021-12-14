@@ -36,32 +36,23 @@ class Day14 {
     // MARK: - Worker functions
     
     static func findAnswer(input: String, rules: RulesDict, iterations: Int) -> Int {
-        let charArray = getCharArray(input: input, rules: rules, iterations: iterations)
-        let sortedCounts = findLetterCounts(in: charArray)
+        var characterCounts = input.reduce(into: [:], { $0[$1] = $0[$1, default: 0] + 1 } )
+        
+        let charPairs = (0..<input.count-1).map { CharPair(input[$0], input[$0+1]) }
+        charPairs.forEach { getChildren(from: $0, rules: rules, currentDepth: 0, maxDepth: iterations, counts: &characterCounts) }
+        
+        let sortedCounts = characterCounts
             .map { $0.value }
             .sorted()
         return sortedCounts.last! - sortedCounts.first!
     }
     
-    static func getCharArray(input: String, rules: RulesDict, iterations: Int) -> [Character] {
-        let charPairs = (0..<input.count-1)
-            .map { CharPair(input[$0], input[$0+1]) }
-        let lhs = charPairs
-            .flatMap { getChildren(from: $0, rules: rules, currentDepth: 0, maxDepth: iterations) }
-        return lhs + [Array(input).last!]
-    }
-    
-    static func getChildren(from input: CharPair, rules: RulesDict, currentDepth: Int, maxDepth: Int) -> [Character] {
-        guard currentDepth < maxDepth else { return [input.0] }
+    static func getChildren(from input: CharPair, rules: RulesDict, currentDepth: Int, maxDepth: Int, counts: [Character: Int]) {
+        guard currentDepth < maxDepth else { return }
         let child = rules[[input.0, input.1]]!
-        return [
-            getChildren(from: (input.0, child), rules: rules, currentDepth: currentDepth+1, maxDepth: maxDepth),
-            getChildren(from: (child, input.1), rules: rules, currentDepth: currentDepth+1, maxDepth: maxDepth),
-        ].flatMap { $0 }
-    }
-    
-    static func findLetterCounts(in input: [Character]) -> [Character: Int] {
-        return input.reduce(into: [:], { $0[$1] = $0[$1, default: 0] + 1 })
+        counts[child] = counts[child, default: 0] + 1
+        getChildren(from: (input.0, child), rules: rules, currentDepth: currentDepth+1, maxDepth: maxDepth, counts: &counts)
+        getChildren(from: (child, input.1), rules: rules, currentDepth: currentDepth+1, maxDepth: maxDepth, counts: &counts)
     }
     
 }
