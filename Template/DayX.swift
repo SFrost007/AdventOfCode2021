@@ -1,13 +1,14 @@
 import Foundation
 
-class DayX {
+final class DayX: Day {
     
     // MARK: - Initialisation
     
     let inputData: [String]
     
-    init(inputURL: URL) {
-        inputData = try! String(contentsOf: inputURL).components(separatedBy: .newlines)
+    init(input: String) {
+        inputData = input
+            .components(separatedBy: .newlines)
     }
     
     // MARK: - Problem cases

@@ -1,13 +1,13 @@
 import Foundation
 
-class Day5 {
+final class Day5: Day {
     
     // MARK: - Initialisation
     
     let lines: [Line]
     
-    init(inputURL: URL) {
-        lines = try! String(contentsOf: inputURL)
+    init(input: String) {
+        lines = input
             .components(separatedBy: .newlines)
             .filter { !$0.isEmpty }
             .map { Line($0) }

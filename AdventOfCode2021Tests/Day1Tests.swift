@@ -3,8 +3,8 @@ import XCTest
 
 class Day1Tests: AoCTestCase {
     
-    let example = Day1(inputURL: urlForExampleData(day: 1))
-    let myInput = Day1(inputURL: urlForMyInputData(day: 1))
+    let example = Day1(input: exampleInput(day: 1))
+    let myInput = Day1(input: myInput(day: 1))
     
     func testPart1() {
         XCTAssertEqual(example.part1(), 7)

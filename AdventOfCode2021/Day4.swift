@@ -1,18 +1,17 @@
 import Foundation
 
-class Day4 {
+final class Day4: Day {
     
     // MARK: - Initialisation
     
     let calledNumbers: [Int]
     let bingoBoards: [BingoBoard]
     
-    init(inputURL: URL) {
-        let inputData = try! String(contentsOf: inputURL)
-        let firstLine = inputData.components(separatedBy: .newlines).first!
+    init(input: String) {
+        let firstLine = input.components(separatedBy: .newlines).first!
         calledNumbers = firstLine.components(separatedBy: ",").compactMap { Int($0) }
         
-        let inputWithoutCalledNumbers = inputData.components(separatedBy: .newlines)[2...].joined(separator: "\n")
+        let inputWithoutCalledNumbers = input.components(separatedBy: .newlines)[2...].joined(separator: "\n")
         let boardsData = inputWithoutCalledNumbers.components(separatedBy: "\n\n")
         bingoBoards = boardsData.map { BingoBoard($0) }
     }

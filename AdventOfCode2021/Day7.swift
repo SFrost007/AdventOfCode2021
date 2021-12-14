@@ -1,13 +1,13 @@
 import Foundation
 
-class Day7 {
+final class Day7: Day {
     
     // MARK: - Initialisation
     
     let inputData: [Int]
     
-    init(inputURL: URL) {
-        inputData = try! String(contentsOf: inputURL)
+    init(input: String) {
+        inputData = input
             .trimmingCharacters(in: .newlines)
             .components(separatedBy: ",")
             .compactMap { Int($0) }

@@ -1,6 +1,6 @@
 import Foundation
 
-class Day13 {
+final class Day13: Day {
     
     // MARK: - Initialisation
     
@@ -20,8 +20,8 @@ class Day13 {
     let dots: [Dot]
     let instructions: [FoldInstruction]
     
-    init(inputURL: URL) {
-        let inputData = try! String(contentsOf: inputURL)
+    init(input: String) {
+        let inputData = input
             .components(separatedBy: "\n\n")
         dots = inputData
             .first!

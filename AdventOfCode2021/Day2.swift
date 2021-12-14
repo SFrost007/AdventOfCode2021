@@ -1,6 +1,6 @@
 import Foundation
 
-class Day2 {
+final class Day2: Day {
     
     // MARK: - Helper struct
     
@@ -23,8 +23,8 @@ class Day2 {
     
     let inputData: [Instruction]
     
-    init(inputURL: URL) {
-        inputData = try! String(contentsOf: inputURL)
+    init(input: String) {
+        inputData = input
             .components(separatedBy: .newlines)
             .filter { !$0.isEmpty }
             .map { Instruction($0) }

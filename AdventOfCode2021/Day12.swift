@@ -1,13 +1,13 @@
 import Foundation
 
-class Day12 {
+final class Day12: Day {
     
     // MARK: - Initialisation
     
     let nodeLookup: [String: Node]
     
-    init(inputURL: URL) {
-        nodeLookup = try! String(contentsOf: inputURL)
+    init(input: String) {
+        nodeLookup = input
             .components(separatedBy: .newlines)
             .filter { !$0.isEmpty }
             .reduce(into: [:]) { (dict, line) in

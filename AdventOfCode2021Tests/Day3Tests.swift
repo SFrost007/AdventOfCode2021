@@ -3,8 +3,8 @@ import XCTest
 
 class Day3Tests: AoCTestCase {
     
-    let example = Day3(inputURL: urlForExampleData(day: 3))
-    let myInput = Day3(inputURL: urlForMyInputData(day: 3))
+    let example = Day3(input: exampleInput(day: 3))
+    let myInput = Day3(input: myInput(day: 3))
     
     func testPart1() {
         XCTAssertEqual(Day3.calculateGammaRate(in: example.inputData), "10110")

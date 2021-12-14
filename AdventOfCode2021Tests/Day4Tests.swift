@@ -3,8 +3,8 @@ import XCTest
 
 class Day4Tests: AoCTestCase {
     
-    let example = Day4(inputURL: urlForExampleData(day: 4))
-    let myInput = Day4(inputURL: urlForMyInputData(day: 4))
+    let example = Day4(input: exampleInput(day: 4))
+    let myInput = Day4(input: myInput(day: 4))
     
     func testPart1() {
         // Parsing tests

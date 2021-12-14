@@ -1,6 +1,6 @@
 import Foundation
 
-class Day14 {
+final class Day14: Day {
     
     // MARK: - Initialisation
     
@@ -19,8 +19,8 @@ class Day14 {
         }
     }
     
-    init(inputURL: URL) {
-        let inputData = try! String(contentsOf: inputURL)
+    init(input: String) {
+        let inputData = input
             .trimmingCharacters(in: .newlines)
             .components(separatedBy: "\n\n")
         template = inputData[0]

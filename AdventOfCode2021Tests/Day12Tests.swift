@@ -3,10 +3,10 @@ import XCTest
 
 class Day12Tests: AoCTestCase {
     
-    let example1 = Day12(inputURL: urlForExampleData(day: 12, partSuffix: "1a"))
-    let example2 = Day12(inputURL: urlForExampleData(day: 12, partSuffix: "1b"))
-    let example3 = Day12(inputURL: urlForExampleData(day: 12, partSuffix: "1c"))
-    let myInput = Day12(inputURL: urlForMyInputData(day: 12))
+    let example1 = Day12(input: exampleInput(day: 12, partSuffix: "1a"))
+    let example2 = Day12(input: exampleInput(day: 12, partSuffix: "1b"))
+    let example3 = Day12(input: exampleInput(day: 12, partSuffix: "1c"))
+    let myInput = Day12(input: myInput(day: 12))
     
     func testParsing() {
         XCTAssertEqual(example1.nodeLookup.count, 6)

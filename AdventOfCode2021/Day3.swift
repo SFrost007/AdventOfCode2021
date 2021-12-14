@@ -1,13 +1,15 @@
 import Foundation
 
-class Day3 {
+final class Day3: Day {
     
     // MARK: - Initialisation
     
     let inputData: [String]
     
-    init(inputURL: URL) {
-        inputData = try! String(contentsOf: inputURL).components(separatedBy: .newlines).filter { !$0.isEmpty }
+    init(input: String) {
+        inputData = input
+            .components(separatedBy: .newlines)
+            .filter { !$0.isEmpty }
     }
     
     // MARK: - Part 1
